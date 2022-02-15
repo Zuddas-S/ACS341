@@ -1,5 +1,6 @@
-import sys
+#Setup
 
+import sys
 import numpy.f2py.capi_maps
 import sklearn
 import numpy as np
@@ -20,13 +21,15 @@ CHAPTER_ID = "training_linear_models"
 IMAGES_PATH = os.path.join(PROJECT_ROOT_DIR, "../images", CHAPTER_ID)
 os.makedirs(IMAGES_PATH, exist_ok=True)
 
+###################################
+#function for figure saving
 def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
     path = os.path.join(IMAGES_PATH, fig_id + "." + fig_extension)
     print("Saving figure", fig_id)
     if tight_layout:
         plt.tight_layout()
     plt.savefig(path, format=fig_extension, dpi=resolution)
-
+####################################################
 
 x=2*np.random.rand(100,1)
 y=4+3*x+np.random.rand(100,1)
@@ -38,12 +41,10 @@ save_fig("generatedDataPlot")
 
 xb=np.c_[np.ones((100,1)),x] #adds x0=1 to each instance
 theta_best=np.linalg.inv(xb.T.dot(xb)).dot(xb.T).dot(y)
-theta_best
 
 xnew=np.array([[0],[2]])
 xnewb=np.c_[np.ones((2,1)),xnew]
 ypredict=xnewb.dot(theta_best)
-ypredict
 
 plt.plot(xnew, ypredict, "r-")
 plt.plot(x, y, "b.")
@@ -56,28 +57,25 @@ linReg.intercept_,linReg.coef_
 linReg.predict(xnew)
 #Because the linear regression class is based off scipy.linalg.lstsq() you can directly call:
 
-
 thetaBestSvd,residuals,rank,s=np.linalg.lstsq(xb,y,rcond=1e-6)# note the 1e-6 is 1x10^-6
 #computes ls through the pinv directly
 np.linalg.pinv(xb).dot(y)
 
 #############################################################
+#Exercise 1
+xList=[]
+yList=[]
 
 with open('/Users/seb/PycharmProjects/ACS341/Lab1/data_quiz_1.csv') as quizOneData:
-    reader=csv.reader(quizOneData)
-    next(reader)
-    quizOneList=list(csv.reader(quizOneData))
+    reader=csv.reader(quizOneData,delimiter=',')
+    readerT = np.array(reader).T.tolist()#transpose of Reader
+    for rows in reader:
+        #note these are given as lists
+        xList.append(float(rows[1])) #x column is the second one (1 from 0)
+        yList.append(float(rows[0])) #y column is the first one, 0
 
-print(quizOneList)
-quizOneListT=np.array(quizOneList).T.tolist()
-print(quizOneListT)
+plt.plot(xList,yList,'b.')
+plt.show()
+save_fig("Quiz1 no LR")
 
-
-xArray,yArray=[],[]
-
-xlist=[]
-
-for i in quizOneList:
-    x[i]=quizOneListT[i]
-print(x)
 
