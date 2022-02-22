@@ -98,13 +98,44 @@ plt.show()
 ##############################################################################################
 #
 
+thetaPathMBGD=[]
+nIterations=50
+miniBatchSize=20
+np.random.seed(42)
+theta=np.random.randn(2,1)
+t,t0,t1=0,200,1000
 
+## We use the learning scedule function already defined above
 
+for epoch in range(nIterations):
+    shuffledIndices=np.random.permutation(m)
+    xbShuffled=xb[shuffledIndices]
+    yShuffled=y[shuffledIndices]
+    for i in range(0,m,miniBatchSize):
+        t+=1
+        xi=xbShuffled[i:i+miniBatchSize]
+        yi=yShuffled[i:i+miniBatchSize]
+        gradients=2/miniBatchSize * xi.T.dot(xi.dot(theta)-yi)
+        eta=learningSchedule(t)
+        theta=theta-eta*gradients
+        thetaPathMBGD.append(theta)
 
+    ### putting all grad desc. algos together.
 
-
-
-
-
+thetaPathBGD=np.array(thetaPathBGD)
+thetaPathSGD=np.array(thetaPathSGD)
+thetaPathMBGD=np.array(thetaPathMBGD)
+plt.figure(figsize=(7,4))
+plt.plot(thetaPathSGD[:,0],thetaPathSGD[:,1],'r-s',linewidth=1,label="Stochastic")
+plt.plot(thetaPathMBGD[:,0],thetaPathMBGD[:,1],'b-o',linewidth=1,label="Mini-Batch")
+plt.plot(thetaPathBGD[:,0],thetaPathBGD[:,1],'g-+',linewidth=1,label="Batch")
+plt.legend(loc='upper left',fontsize=12)
+plt.xlabel(r'$\theta_0$',fontsize=10)
+plt.ylabel(r'$\theta_1$',fontsize=10,rotation=0)
+plt.axis([2.5,5,2.3,4.5])
+setup.save_fig('Comparison of Gradient Descent Methods')
+plt.show()
+################################################################################################################
+#Polynomial Regression
 
 
