@@ -11,6 +11,7 @@ import csv
 from setup import save_fig
 from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
 
 ##################################################################
@@ -123,7 +124,6 @@ plt.plot(XSM[ySM==0, 0], XSM[ySM==0, 1], "yo", label="Iris setosa")
 
 from matplotlib.colors import ListedColormap
 custom_cmap = ListedColormap(['#fafab0','#9898ff','#a0faa0'])
-
 plt.contourf(x2, x3, zz2, cmap=custom_cmap)
 contour = plt.contour(x2, x3, zz1, cmap=plt.cm.brg)
 plt.clabel(contour, inline=1, fontsize=12)
@@ -132,5 +132,42 @@ plt.ylabel("Petal width", fontsize=14)
 plt.legend(loc="center left", fontsize=14)
 plt.axis([0, 7, 0, 3.5])
 plt.show()
+############################################################################
+#
+
+def toOneHot(y):
+    nClasses=y.max()+1
+    m=len(y)
+    yOneHot=np.zeros((m,nClasses))
+    yOneHot[np.arrange(m),y]=1
+    return yOneHot
+
+def softmax(logits):
+    exps=np.exp(logits)
+    expSums=np.sum(exps,axis=1,keepdims=True)
 
 
+#where does yTrainOneHot come in??
+"""
+def train(xTrain,yTrain):
+    nInputs=xTrain.shape[1]
+    nOutputs=len(np.unique(yTrain))
+
+    eta=0.01
+    nIteration=5001
+    m=len(xTrain)
+    epsilon=1e-7
+
+    Theta=np.random.randn(nInputs,nOutputs)
+    for iteration in range(nIteration):
+        logits=xTrain.dot(Theta)
+        yProbA=softmax(logits)
+        loss=-np.mean(np.sum(yTrainOneHot*np.log(yProbA+epsilon),axis=1))
+        #loss value
+        error=yProbA-yTrainOneHot
+        if iteration%500==0:
+            print(iteration,loss)
+        gradients=1/m*xTrain.T.dot(error)
+        Theta=Theta-eta*gradients
+    return Theta
+"""
