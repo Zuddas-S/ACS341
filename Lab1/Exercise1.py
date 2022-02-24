@@ -47,7 +47,7 @@ thetaBestSvd,residuals,rank,s=np.linalg.lstsq(xb,y,rcond=1e-6)# note the 1e-6 is
 #computes ls through the pinv directly
 np.linalg.pinv(xb).dot(y)
 
-#############################################################
+##########################################################################################################################
 #Exercise 1
 xList=[]
 yList=[]

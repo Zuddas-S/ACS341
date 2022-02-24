@@ -120,7 +120,7 @@ for epoch in range(nIterations):
         theta=theta-eta*gradients
         thetaPathMBGD.append(theta)
 
-    ### putting all grad desc. algos together.
+### putting all grad desc. algos together.
 
 thetaPathBGD=np.array(thetaPathBGD)
 thetaPathSGD=np.array(thetaPathSGD)
