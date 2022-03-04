@@ -4,8 +4,8 @@ import numpy as np
 
 class ClassRegression:
 
-    def __init__(self, lr=0.001, classification="binary", n_iter=100, epsilon=10e-7):
-        self.lr = lr
+    def __init__(self, eta=0.0001, classification="binary", n_iter=1000, epsilon=10e-8):
+        self.eta = eta
         self.classification = classification
         self.n_iter = n_iter
         self.epsilon = epsilon
@@ -20,20 +20,33 @@ class ClassRegression:
         # Iterate
         # Return weight after finishing
         m = len(X)
-        theta = np.random.rand(m,1)
+        n_outputs = X.shape[1]
+        self.theta = np.random.rand(n_outputs, 1)
         if self.classification == "binary":
-            pass
+            for i in range(self.n_iter):
+                y_hat = self._sigmoid(np.dot(X, self.theta))
+                loss = self._compute_loss_binary(y_hat, y)
+                self.theta = self.theta - self.eta * np.mean((y_hat - y).dot(X))
+                if i % 10 == 0:
+                    print(f"Iteration: {i} Loss: {loss}")
+                
+                if loss < self.epsilon:
+                    break
 
         elif self.classification == "softmax":
             pass
-    
+        
+        return self
 
     def predict(self, X):
-        pass
+        p = np.around(self._sigmoid(np.dot(X, self.theta)))
+        return p
 
 
     def _compute_loss_binary(self, y_hat, y):
-        return -np.mean(y*np.log(y_hat) + (1-y)*np.log(1-y_hat), axis=1)
+        m = len(y)
+        cost = (1/m)*(((-y).T @ np.log(y_hat + self.epsilon))-((1-y).T @ np.log(1-y_hat + self.epsilon)))
+        return cost
 
     
     def _compute_loss_softmax(self, y_hat, y):
@@ -46,7 +59,7 @@ class ClassRegression:
         n_classes = np.unique(y).shape[0]
         m = len(y)
         y_one_hot = np.zeros((m, n_classes))
-        y_one_hot[np.arrange(m), y] = 1
+        y_one_hot[np.arange(m), y] = 1
         return y_one_hot 
 
 
@@ -60,16 +73,32 @@ class ClassRegression:
 
 
     def _sigmoid(self, logits):
-        return np.exp(1/(1+ np.exp(-logits)))
+        return 1/(1 + np.exp(-logits))
 
     def _softmax(self, logits):
         return np.sum(np.exp(logits), axis=1, keepdims=True)
 
+## Training and testing the algorithm
 
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
 
+X, y = make_classification(n_samples=1500, n_features=2, n_classes=2, n_redundant=0)
+X = np.append(np.ones((len(X), 1)), X, axis=1)
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+reg = ClassRegression()
+reg.train(X_train, y_train)
+y_pred = reg.predict(X_test)
 
+def count_accuracy(y_pred, y_test):
+    accuracy = 0
+    for i in range(len(y_test)):
+        if y_pred[i] == y_test[i]:
+            accuracy += 1
+    return accuracy/len(y_test) * 100
 
+print(count_accuracy(y_pred, y_test))
 
 
 
