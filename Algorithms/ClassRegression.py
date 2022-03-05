@@ -4,7 +4,7 @@ import numpy as np
 
 class ClassRegression:
 
-    def __init__(self, eta=0.0001, classification="binary", n_iter=1000, epsilon=10e-8):
+    def __init__(self, eta=0.01, classification="binary", n_iter=1000, epsilon=10e-4):
         self.eta = eta
         self.classification = classification
         self.n_iter = n_iter
@@ -21,12 +21,13 @@ class ClassRegression:
         # Return weight after finishing
         m = len(X)
         n_outputs = X.shape[1]
-        self.theta = np.random.rand(n_outputs, 1)
+        self.theta = np.random.randn(n_outputs)
         if self.classification == "binary":
             for i in range(self.n_iter):
                 y_hat = self._sigmoid(np.dot(X, self.theta))
                 loss = self._compute_loss_binary(y_hat, y)
-                self.theta = self.theta - self.eta * np.mean((y_hat - y).dot(X))
+                gradient = np.dot(X.T, (y_hat - y)) / y.size
+                self.theta -= self.eta * gradient
                 if i % 10 == 0:
                     print(f"Iteration: {i} Loss: {loss}")
                 
@@ -39,14 +40,12 @@ class ClassRegression:
         return self
 
     def predict(self, X):
-        p = np.around(self._sigmoid(np.dot(X, self.theta)))
+        p = np.where(self._sigmoid(np.dot(X, self.theta)) >= 0.5, 1, 0)
         return p
 
 
     def _compute_loss_binary(self, y_hat, y):
-        m = len(y)
-        cost = (1/m)*(((-y).T @ np.log(y_hat + self.epsilon))-((1-y).T @ np.log(1-y_hat + self.epsilon)))
-        return cost
+        return np.mean((-y * np.log(y_hat) - (1 - y) * np.log(1 - y_hat)))
 
     
     def _compute_loss_softmax(self, y_hat, y):
@@ -73,7 +72,7 @@ class ClassRegression:
 
 
     def _sigmoid(self, logits):
-        return 1/(1 + np.exp(-logits))
+        return 1.0/(1.0 + np.exp(-logits))
 
     def _softmax(self, logits):
         return np.sum(np.exp(logits), axis=1, keepdims=True)
@@ -99,6 +98,7 @@ def count_accuracy(y_pred, y_test):
     return accuracy/len(y_test) * 100
 
 print(count_accuracy(y_pred, y_test))
+print(reg.theta.shape)
 
 
 
