@@ -10,11 +10,14 @@ class ClassRegression:
 
     Hyperparameters:
 
-    eta - learning rate, the hyperparameter that influences the
-    quality of gradient descent hence weight update.
+    eta - learning rate. This is the hyperparameter that influences the
+    rate at which the cost function is updated. It is important to select an appropriate
+    learning rate such that it the algorithm doesn't get stuck in local minima.
+    Too big, and the learning rate will jump across the solution space
+    too abruptly. Too small and the algorithm will take a long time to train.
 
-    classification - type of desired classification. Can be either
-    "binary" or "softmax".
+    classification - used to group instances of data. Can be either
+    "binary" or "softmax" in this case.
 
     n_iter - number of iterations to be executed during the training
     process.
@@ -22,7 +25,6 @@ class ClassRegression:
     epsilon - threshold error after which the algorithm will stop
     training.
 
-    
     ------------------------------------------------------------------
 
     Methods:
@@ -53,7 +55,7 @@ class ClassRegression:
 
     def train(self, X: np.ndarray, y: np.ndarray):
         m = len(X)
-        n_outputs = X.shape[1] # number of features in datset.
+        n_outputs = X.shape[1] # number of features in dataset.
         self.theta = np.random.randn(n_outputs) # initializing weight vector.
         if self.classification == "binary": # checking for type of classification.
             for i in range(self.n_iter):
