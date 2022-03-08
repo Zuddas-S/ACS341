@@ -1,0 +1,12 @@
+Empty Columns:
+
+
+One hot encoding of weather_description to weather_id:
+sky is clear - 800
+few clouds - 801
+scattered clouds - 802
+broken clouds - 803
+overcast clouds - 804
+light rain - 500
+moderate rain - 501
+heavy intensity rain - 502
