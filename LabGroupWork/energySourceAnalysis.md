@@ -1,2 +1,2 @@
 # Comparison of Different Energy Sources
-as part of out 
+as part of our project we look to compare the different energy production techniques. 
