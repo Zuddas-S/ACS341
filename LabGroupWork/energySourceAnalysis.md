@@ -19,6 +19,8 @@ Biomass, Fossil Brown Coal lignite, Fossil Coal derived Gas, Fossil Gas, Fossil 
 Nuclear refers to the energy released by atomic nuclei through nuclear fusion, nuclear fission or radionuclear decay. Nuclear power plants obtain a large amount of energy by fission and release of nuclear fuel made of uranium in the reactor。
 
 ## Other 
-Energy can be obtained from other, other renewable and garbage.
+Energy can be obtained from other, other renewable and waste.
+
+Renewable energy is mostly included in sustainable energy (refer to sustainable energy).
 
 As a domestic product, waste can be incinerated to generate energy, but there are also drawbacks. A large amount of toxic gases will be produced without complete combustion and special treatment.
