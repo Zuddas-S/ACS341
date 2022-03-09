@@ -15,6 +15,12 @@ Wind Off shore and Wind On shore are wind energy generated through temperature d
 ## Fossil Fuel Based
 Biomass, Fossil Brown Coal lignite, Fossil Coal derived Gas, Fossil Gas, Fossil Hard Coal, Fossil Oil, Fossil Oil Shale, Fossil Peat are all fossil fuels and gaseous fuels from the energy contained in the organism, the direct extraction of the organism and the anaerobic digestion of a large number of phytoplankton and zooplankton organic residues in the seabed and lake bottoms for millions of years.
 
+Biomass is plant-based material used as fuel to produce energy.
+
+Fossil Brown Coal lignite,  Fossil Hard Coal, Fossil Oil, Fossil Oil Shale, Fossil Peat are the massive organic remnants of phytoplankton and zooplankton on the seafloor and lake bottoms, and over millions of years, as geological age changes, these organic compounds have been mixed with soil and buried under layers of sediment. Due to extremely high heat and pressure conditions, it is gradually produced by anaerobic digestion. It first transforms into a waxy substance called kerogen, which is present in oil shale, and then, with more heat, into liquid and gaseous hydrocarbons.
+
+
+
 ## Nuclear
 Nuclear refers to the energy released by atomic nuclei through nuclear fusion, nuclear fission or radionuclear decay. Nuclear power plants obtain a large amount of energy by fission and release of nuclear fuel made of uranium in the reactor。
 
