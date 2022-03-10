@@ -42,7 +42,7 @@ class ClassRegression:
     
     """
 
-    def __init__(self, eta=0.01, classification="binary", n_iter=1000, epsilon=10e-4):
+    def __init__(self, eta=0.007, classification="binary", n_iter=1001, epsilon=10e-4):
         self.eta = eta
         self.classification = classification
         self.n_iter = n_iter
@@ -55,8 +55,8 @@ class ClassRegression:
 
     def train(self, X: np.ndarray, y: np.ndarray):
         m = len(X)
-        n_outputs = X.shape[1] # number of features in dataset.
-        self.theta = np.random.randn(n_outputs) # initializing weight vector.
+        n_features = X.shape[1] # number of features in dataset.
+        self.theta = np.random.randn(n_features) # initializing weight vector.
         if self.classification == "binary": # checking for type of classification.
             for i in range(self.n_iter):
                 y_hat = self._sigmoid(np.dot(X, self.theta))
@@ -70,14 +70,32 @@ class ClassRegression:
                     break
 
         elif self.classification == "softmax":
-            pass
-        
+            n_outputs = len(np.unique(y))
+            self.theta = np.random.randn(n_features, n_outputs)
+            y_hot_encoded = self._one_hot_encoding(y)
+            for i in range(self.n_iter):
+                logits = X.dot(self.theta)
+                y_probs = self._softmax(logits)
+                loss = self._compute_loss_softmax(y_probs, y_hot_encoded)
+                error = y_probs - y_hot_encoded
+                gradient = 1.0/m * X.T.dot(error)
+                self.theta -= self.eta * gradient
+
+                if i % 10 == 0:
+                    print(f"Iteration: {i} Loss: {loss}")
+                
+                if loss < self.epsilon: # stop training if error is sufficiently low.
+                    break
+
         return self
 
 
     def predict(self, X: np.ndarray) -> np.ndarray:
-        p = np.where(self._sigmoid(np.dot(X, self.theta)) >= 0.5, 1, 0) # if probability is above 0.5, return 1, else return 0.
-        return p
+        if self.classification == "binary":
+            p_hat = np.where(self._sigmoid(np.dot(X, self.theta)) >= 0.5, 1, 0) # if probability is above 0.5, return 1, else return 0.
+        else:
+            p_hat = np.argmax(self._softmax(np.dot(X, self.theta)), axis=1)
+        return p_hat
 
 
     def _compute_loss_binary(self, y_hat: np.ndarray, y: np.ndarray):
@@ -88,7 +106,7 @@ class ClassRegression:
         """
         Nota bene: y_hat has to be hot-one encoded here (because we do multiclass classification here).
         """
-        return -np.mean(np.sum(y*np.log(y_hat, axis=1)))
+        return -np.mean(np.sum(y * np.log(y_hat + self.epsilon), axis=1))
     
 
     def _one_hot_encoding(self, y: np.ndarray):
@@ -99,42 +117,12 @@ class ClassRegression:
         return y_one_hot 
 
 
-    def _gradients_softmax(self, theta: np.ndarray):
-        pass
-
-
     def _sigmoid(self, logits: np.ndarray):
         return 1.0/(1.0 + np.exp(-logits))
 
 
     def _softmax(self, logits: np.ndarray):
-        return np.sum(np.exp(logits), axis=1, keepdims=True)
-
-## Training and testing the algorithm
-
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
-
-X, y = make_classification(n_samples=1500, n_features=2, n_classes=2, n_redundant=0)
-X = np.append(np.ones((len(X), 1)), X, axis=1) # adding bias term.
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) # Splitting data with 70/30 proportion.
-reg = ClassRegression()
-reg.train(X_train, y_train)
-y_pred = reg.predict(X_test)
-
-def count_accuracy(y_pred, y_test):
-    accuracy = 0
-    for i in range(len(y_test)):
-        if y_pred[i] == y_test[i]:
-            accuracy += 1
-    return accuracy/len(y_test) * 100
-
-print(count_accuracy(y_pred, y_test)) # Printing the accuracy of a model
-
-
-
-
+        return np.exp(logits) / np.sum(np.exp(logits), keepdims=True)
 
 
 
