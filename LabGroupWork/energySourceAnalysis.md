@@ -10,7 +10,7 @@ Hydraulic pumped storage, hydraulic pumped storage consumption, hydraulic operat
 
 Solar is the light and heat energy that comes from the sun. Solar energy is also a very clean energy source, but it is also affected by latitude. In low latitudes, it will get relatively sufficient sunlight due to its proximity to the direct sun point, but the irradiation intensity in high latitudes will not be very impressive.
 
-Wind Off shore and Wind On shore are wind energy generated through temperature differences due to differences in solar exposure and heat absorption in different regions.
+Wind Off shore and Wind On shore are wind energy generated through temperature differences due to differences in solar exposure and heat absorption in different regions.This energy is also a very clean energy. It can be obtained all year round, but the energy obtained will also change due to the change of seasons, and the amount of wind energy obtained will also be affected by the location of the sea and land.
 
 ## Fossil Fuel Based
 Biomass, Fossil Brown Coal lignite, Fossil Coal derived Gas, Fossil Gas, Fossil Hard Coal, Fossil Oil, Fossil Oil Shale, Fossil Peat are all fossil fuels and gaseous fuels from the energy contained in the organism, the direct extraction of the organism and the anaerobic digestion of a large number of phytoplankton and zooplankton organic residues in the seabed and lake bottoms for millions of years.
@@ -19,10 +19,10 @@ Biomass is plant-based material used as fuel to produce energy.
 
 Fossil Brown Coal lignite,  Fossil Hard Coal, Fossil Oil, Fossil Oil Shale, Fossil Peat are the massive organic remnants of phytoplankton and zooplankton on the seafloor and lake bottoms, and over millions of years, as geological age changes, these organic compounds have been mixed with soil and buried under layers of sediment. Due to extremely high heat and pressure conditions, it is gradually produced by anaerobic digestion. It first transforms into a waxy substance called kerogen, which is present in oil shale, and then, with more heat, into liquid and gaseous hydrocarbons.
 
-
+This energy is formed over a long period of time, so overexploitation will lead to the disappearance of this energy.
 
 ## Nuclear
-Nuclear refers to the energy released by atomic nuclei through nuclear fusion, nuclear fission or radionuclear decay. Nuclear power plants obtain a large amount of energy by fission and release of nuclear fuel made of uranium in the reactor。
+Nuclear refers to the energy released by atomic nuclei through nuclear fusion, nuclear fission or radionuclear decay. Nuclear power plants obtain a large amount of energy by fission and release of nuclear fuel made of uranium in the reactor。This energy is very clean, but there are risks associated with this clean energy. If nuclear energy leaks, radiation will be released, seriously affecting organisms and ecology within a few kilometers.
 
 ## Other 
 Energy can be obtained from other, other renewable and waste.
