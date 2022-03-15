@@ -1,5 +1,5 @@
 # Comparison of Different Energy Sources
-as part of our project we look to compare the different energy production techniques.
+As part of our project we look to compare the different energy production techniques.
 
 ## Sustainable
 ### Geothermal
