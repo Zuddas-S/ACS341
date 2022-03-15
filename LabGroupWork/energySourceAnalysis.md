@@ -20,14 +20,13 @@ Solar is the light and heat energy that comes from the sun. Solar energy is also
 
 ## Fossil Fuel Based
 ### Biomass
-Biomass is an animal and plant based material used as fuel to generate energy. It refers to living or just dead organic matter used as fuel or industrial raw material to obtain its energy through combustion or other ways.
+Biomass is an animal and plant based material used as fuel to generate energy. It refers to living or just dead organic matter used as fuel or industrial raw material to obtain its energy through combustion or other ways. Compared with lignite and petrochemicals, the biomass is not degraded animals and plants, which is also the essential difference between the two energy sources.
  
 ### Brown Coal
+Brown Coal(Lignite) is a low thermal mass coal in a state between sub-bituminous coal and peat. Lignite contains a lot of moisture and is prone to spontaneous combustion, so most power plants are built directly near the mines. During the combustion process, due to the high impurity content, the harmful substances and pollution produced by the combustion will be much higher than the general coal power generation.
 
-
-### Oil
-
-### 
+### Fossil Oil
+Fossil Oil generally refers to petroleum, which is mainly used to make gasoline and polymer products (plastics). There are oil deposits in parts of the upper crust. It consists of a mixture of different hydrocarbons, the main constituents of which are alkanes. Since oil is a non-renewable energy source, running out of oil will have serious consequences for human beings.
 
 ## Nuclear
 Nuclear refers to the energy released by atomic nuclei through nuclear fusion, nuclear fission or radionuclear decay. Nuclear power plants obtain a large amount of energy by fission and release of nuclear fuel made of uranium in the reactor。This energy is very clean, but there are risks associated with this clean energy. If nuclear energy leaks, radiation will be released, seriously affecting organisms and ecology within a few kilometers.
