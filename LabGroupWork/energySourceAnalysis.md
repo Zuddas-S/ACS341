@@ -1,5 +1,5 @@
 # Comparison of Different Energy Sources
-as part of our project we look to compare the different energy production techniques.
+As part of our project we look to compare the different energy production techniques.
 
 ## Sustainable
 It is sustainable for Geothermal, Hydro Pumped Storage Arregated, Hydro pumped Storage Consumption, Hydro Run of river And Poundage, Hydrowater Reservoir, Marine, Solar, Wind Off shore and Wind On shore. They are natural energies from the sun, within and by the earth that can be continuously obtained and used.
@@ -29,4 +29,4 @@ Energy can be obtained from other, other renewable and waste.
 
 Renewable energy is mostly included in sustainable energy (refer to sustainable energy).
 
-As a domestic product, waste can be incinerated to generate energy, but there are also drawbacks. A large amount of toxic gases will be produced without complete combustion and special treatment.
+As a domestic product, waste can be incinerated to generate energy, but there are also drawbacks. A large amount of toxic gases will be produced without complete combustion and special handling.
