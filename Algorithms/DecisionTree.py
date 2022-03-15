@@ -11,14 +11,30 @@ class Node:
 
     
 class DecisionTree:
-    def __init__(self):
+    def __init__(self, min_samples_split=200, max_depth=2, n_features=None):
+        self.min_samples_split = min_samples_split
+        self.max_depth = max_depth
+        self.n_features = n_features
+        self.root = None
+
+
+    def train(self, X, y):
+        if not self.n_features:
+            self.n_features = X.shape[1]
+        else:
+            self.n_features = min(X.shape[1], self.n_features)
+
+        self.root = self._grow_tree()
+
+
+    def predict(self, X):
         pass
 
-    def train(self):
-        pass
 
-    def predict(self):
-        pass
+    def _grow_tree(self, X, y):
+        n_samples, n_features = X.shape
+
+        # Now, some stopping criteria have to be implemented
 
 # Defining an entropy to calculate the uncertainty
 
