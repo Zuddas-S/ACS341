@@ -5,7 +5,7 @@ import sys
 
 sys.path.append('../src')
 
-from PCA import PCAnalysis
+from PCA import PCA
 
 X, y = make_classification(n_samples=15000, n_features=20, n_classes=2, n_redundant=0, n_informative=2, n_clusters_per_class=1)
 
@@ -15,16 +15,16 @@ sc = StandardScaler()
 X_train_std = sc.fit_transform(X_train)
 X_test_std = sc.transform(X_test)
 
-pca_scratch = PCAnalysis(n_components=6)
-X_pca_train_scr = pca_scratch.decompose(X_train_std)
-X_pca_test_scr = pca_scratch.transform(X_test_std)
+pca_scratch = PCA(n_components=6)
+X_pca_train_scr = pca_scratch.fit_decompose(X_train_std)
+X_pca_test_scr = pca_scratch.decompose(X_test_std)
 
 
 # Need to use some algorithm to evaluate the efficacy of the PCA class.
 from sklearn.linear_model import LogisticRegression
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA as PCA_sklearn
 
-pca = PCA(n_components=6)
+pca = PCA_sklearn(n_components=6)
 X_pca_train = pca.fit_transform(X_train_std)
 X_pca_test = pca.transform(X_test_std)
 
