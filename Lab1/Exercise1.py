@@ -1,6 +1,4 @@
-#Setup
 
-import setup
 import sys
 import numpy.f2py.capi_maps
 import sklearn
@@ -69,17 +67,14 @@ yList=yList
 xListB=np.c_[np.ones((len(xList),1)),xList]
 betaHat=np.linalg.inv(xListB.T.dot(xListB)).dot(xListB.T).dot(yList) #generate the coeffs by minimising loss function
 
-xListNew=np.array([[np.min(xList)],[np.max(xList)]])#We give the new array the boundaries from min of xList to max of xList
+xListNew=np.array([[np.min(xList)],[np.max(xList)]]) #We give the new array the boundaries from min of xList to max of xList
 xListNewB=np.c_[np.ones((2,1)),xListNew] #Create some ones
 yListPredict=xListNewB.dot(betaHat) #element wise multiplication using the values from betahat to get the predicted outputs
-
 
 plt.plot(xList,yList,'b.')
 plt.plot(xListNew,yListPredict,'-r')
 #plot the two on the same graph.
 plt.show()
-
-
 
 #Now we want to actually perform an error minimisation using linearregression function
 from numpy import reshape
@@ -101,80 +96,3 @@ linReg=LinearRegression()
 
 
 
-##########################################################################################################################
-#Exercise 1
-Horsepower=[]
-Acceleration=[]
-MPG=[]
-
-
-with open('/Users/seb/PycharmProjects/ACS341/Lab1/car_dataset_quiz.csv') as quizOneData:
-    reader=csv.reader(quizOneData,delimiter=',')
-    readerT = np.array(reader).T.tolist()#transpose of Reader
-    for rows in reader:
-        #note these are given as lists
-        Horsepower.append(float(rows[1]))
-        Acceleration.append(float(rows[0]))
-        MPG.append(float(rows[2]))
-
-
-yList=MPG
-xList=np.concatenate((Acceleration,Horsepower))
-plt.plot(xList,yList,'b.')
-plt.show()
-
-xList=xList
-yList=yList
-
-xListB=np.c_[np.ones((len(xList),1)),xList]
-betaHat=np.linalg.inv(xListB.T.dot(xListB)).dot(xListB.T).dot(yList) #generate the coeffs by minimising loss function
-
-xListNew=np.array([[np.min(xList)],[np.max(xList)]])#We give the new array the boundaries from min of xList to max of xList
-xListNewB=np.c_[np.ones((2,1)),xListNew] #Create some ones
-yListPredict=xListNewB.dot(betaHat) #element wise multiplication using the values from betahat to get the predicted outputs
-
-
-plt.plot(xList,yList,'b.')
-plt.plot(xListNew,yListPredict,'-r')
-#plot the two on the same graph.
-plt.show()
-
-
-
-##########################################################################################################################
-#Exercise 1
-Horsepower=[]
-Acceleration=[]
-MPG=[]
-
-
-with open('/Users/seb/PycharmProjects/ACS341/Lab1/car_dataset_quiz.csv') as quizOneData:
-    reader=csv.reader(quizOneData,delimiter=',')
-    readerT = np.array(reader).T.tolist()#transpose of Reader
-    for rows in reader:
-        #note these are given as lists
-        Horsepower.append(float(rows[1]))
-        Acceleration.append(float(rows[0]))
-        MPG.append(float(rows[2]))
-
-
-yList=MPG
-xList=np.concatenate((Acceleration,Horsepower))
-plt.plot(xList,yList,'b.')
-plt.show()
-
-xList=xList
-yList=yList
-
-xListB=np.c_[np.ones((len(xList),1)),xList]
-betaHat=np.linalg.inv(xListB.T.dot(xListB)).dot(xListB.T).dot(yList) #generate the coeffs by minimising loss function
-
-xListNew=np.array([[np.min(xList)],[np.max(xList)]])#We give the new array the boundaries from min of xList to max of xList
-xListNewB=np.c_[np.ones((2,1)),xListNew] #Create some ones
-yListPredict=xListNewB.dot(betaHat) #element wise multiplication using the values from betahat to get the predicted outputs
-
-
-plt.plot(xList,yList,'b.')
-plt.plot(xListNew,yListPredict,'-r')
-#plot the two on the same graph.
-plt.show()
