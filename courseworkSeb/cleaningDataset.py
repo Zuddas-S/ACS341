@@ -61,23 +61,24 @@ plt.show()
 
 cleanDataset.drop('Product_ID', inplace=True, axis=1)
 cleanDataset.drop('Process_temperature_K', inplace=True, axis=1)
-
-one_hot_type = pd.get_dummies(cleanDataset.Product_Type, prefix='Type')
-
+# One hot encoding
+one_hot_type = pd.get_dummies(cleanDataset.Product_Type, prefix='Type') # add drop_first=True to save on columns
 one_hot_failure = pd.get_dummies(cleanDataset.Machine_failure, prefix='Failed')
 
-one_hot = pd.merge(one_hot_type,one_hot_failure)
+cleanDataset = pd.concat([cleanDataset, one_hot_type, one_hot_failure], axis=1)
+cleanDataset.drop('Product_Type', inplace=True, axis=1)
+cleanDataset.drop('Machine_failure', inplace=True, axis=1)
 
-print(one_hot.head())
+#print(cleanDataset.head())
+# Now the product type and the machine failure are one hot encoded!!
 
 
-"""
 x = cleanDataset.values
 min_max_scalar = preprocessing.MinMaxScaler()
 x_scaled = min_max_scalar.fit_transform(x)
 scaledDataset = cleanDataset.DataFrame(x_scaled)
 print(scaledDataset.head())
-"""
+
 # Save the cleaned dataset
 cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 
