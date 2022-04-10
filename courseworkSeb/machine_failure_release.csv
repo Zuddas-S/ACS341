@@ -1,4 +1,4 @@
-Product ID,Product Type,Air temperature [K],Process temperature [K],Rotational speed [rpm],Torque [Nm],Tool wear [min],Machine failure
+Product_ID,Product_Type,Air_temperature_K,Process_temperature_K,Rotational_speed_rpm,Torque_Nm,Tool_wear_min,Machine_failure
 M18096,M,300.8,309.4,1342,62.4,113,Failure
 H29691,H,298,308,1479,50.7,70,No Failure
 L47251,L,298.9,309.1,1452,45.5,196,No Failure
