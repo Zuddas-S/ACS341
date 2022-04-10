@@ -45,7 +45,6 @@ ax = sns.heatmap(corr,
             cbar_kws={'label': 'Correlation' },
             annot_kws={"size": 70 / np.sqrt(len(corr))})
 
-
 plt.xticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24, rotation=30)
 plt.yticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24,rotation=-30)
 ax.figure.axes[-1].yaxis.label.set_size(50)
@@ -53,9 +52,7 @@ cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)
 plt.title('Correlation Matrix', fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/correlation_figure.png')
-plt.show()
-
-
+#plt.show()
 
 #####################################################################################
 
@@ -81,10 +78,51 @@ scaledDataset = pd.DataFrame(x_scaled)
 #scaledDataset = scaledDataset.set_axis(['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes'], axis=1, inplace=False)
 scaledDataset.columns = ['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes']
 print(scaledDataset.head())
+print(cleanDataset.head())
+
+
+
+## Dataset needs to be split into training and testing data.
+# https://www.analyticsvidhya.com/blog/2018/08/dimensionality-reduction-techniques-python/
+
+#################################################
+# Forward and backward feature elimination
+
+##
+# We start with backward
+
+
+
+###################################################
+# PCA
+
+
+#################################################
+# Random forest
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor(random_state=1, max_depth=10)
+model.fit(scaledDataset, scaledDataset.Failed_Yes)
+
+
+
+
 
 # Save the cleaned dataset
 cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 scaledDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 """
 print(cleanDataset.isnull().sum())#check to see if there are no nans
