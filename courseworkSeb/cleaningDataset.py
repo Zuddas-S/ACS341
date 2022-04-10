@@ -73,15 +73,18 @@ cleanDataset.drop('Machine_failure', inplace=True, axis=1)
 # Now the product type and the machine failure are one hot encoded!!
 
 
-x = cleanDataset.values
+
+x = cleanDataset
 min_max_scalar = preprocessing.MinMaxScaler()
 x_scaled = min_max_scalar.fit_transform(x)
-scaledDataset = cleanDataset.DataFrame(x_scaled)
+scaledDataset = pd.DataFrame(x_scaled)
+#scaledDataset = scaledDataset.set_axis(['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes'], axis=1, inplace=False)
+scaledDataset.columns = ['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes']
 print(scaledDataset.head())
 
 # Save the cleaned dataset
 cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
-
+scaledDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
 
 """
 print(cleanDataset.isnull().sum())#check to see if there are no nans
