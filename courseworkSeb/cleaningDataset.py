@@ -28,11 +28,10 @@ cleanDataset['Tool_wear_min'] = cleanDataset['Tool_wear_min'].astype('int')
 cleanDataset['Machine_failure'] = cleanDataset['Machine_failure'].map({'Failure': 'Yes', 'No_Failure': 'No'})
 
 corr = cleanDataset.apply(lambda x: x.factorize()[0]).corr()
-
 # corr.style.background_gradient(cmap='coolwarm')
 
 
-f = plt.figure(figsize=(30,25))
+f = plt.figure(figsize=(30, 25))
 ax = sns.heatmap(corr,
             xticklabels=corr.columns.values,
             yticklabels=corr.columns.values,
@@ -46,7 +45,7 @@ ax = sns.heatmap(corr,
             annot_kws={"size": 70 / np.sqrt(len(corr))})
 
 plt.xticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24, rotation=30)
-plt.yticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24,rotation=-30)
+plt.yticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24, rotation=-30)
 ax.figure.axes[-1].yaxis.label.set_size(50)
 cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)
