@@ -61,30 +61,30 @@ with open('/Users/seb/PycharmProjects/ACS341/Lab1/data_quiz_1.csv') as quizOneDa
 plt.plot(xList,yList,'b.')
 plt.show()
 
-xList=xList
-yList=yList
+xList = xList
+yList = yList
 
-xListB=np.c_[np.ones((len(xList),1)),xList]
-betaHat=np.linalg.inv(xListB.T.dot(xListB)).dot(xListB.T).dot(yList) #generate the coeffs by minimising loss function
+xListB = np.c_[np.ones((len(xList),1)),xList]
+betaHat = np.linalg.inv(xListB.T.dot(xListB)).dot(xListB.T).dot(yList) # generate the coeffs by minimising loss function
 
-xListNew=np.array([[np.min(xList)],[np.max(xList)]]) #We give the new array the boundaries from min of xList to max of xList
-xListNewB=np.c_[np.ones((2,1)),xListNew] #Create some ones
-yListPredict=xListNewB.dot(betaHat) #element wise multiplication using the values from betahat to get the predicted outputs
+xListNew = np.array([[np.min(xList)], [np.max(xList)]]) # We give the new array the boundaries from min of xList to max of xList
+xListNewB = np.c_[np.ones((2, 1)), xListNew] # Create some ones
+yListPredict = xListNewB.dot(betaHat) # element wise multiplication using the values from betahat to get the predicted outputs
 
-plt.plot(xList,yList,'b.')
-plt.plot(xListNew,yListPredict,'-r')
-#plot the two on the same graph.
+plt.plot(xList, yList, 'b.')
+plt.plot(xListNew, yListPredict, '-r')
+# plot the two on the same graph.
 plt.show()
 
-#Now we want to actually perform an error minimisation using linearregression function
+# Now we want to actually perform an error minimisation using linearregression function
 from numpy import reshape
 
-twoDimensionalData=xList+yList
-xArray=np.array(xList)
-yArray=np.array(yList)
-xArray=xArray.reshape(-1,1)
-yArray=yArray.reshape(-1,1)
-linReg=LinearRegression()
+twoDimensionalData = xList+yList
+xArray = np.array(xList)
+yArray = np.array(yList)
+xArray = xArray.reshape(-1, 1)
+yArray = yArray.reshape(-1, 1)
+linReg = LinearRegression()
 #fit and predict methods need 2D arrays!!
 #linReg.fit(xArray,yArray)
 #linReg.intercept_,linReg.coef_
