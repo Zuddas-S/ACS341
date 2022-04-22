@@ -12,7 +12,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import *
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import *
@@ -27,9 +27,11 @@ clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_
 clean_data = clean_data.astype('float')
 
 train, test = train_test_split(scaled_data, test_size=0.2)
+
 train_target = train['Failed_Yes']
 test_target = test['Failed_Yes']
-
+train.drop(['Failed_Yes'])
+test.drop(['Failed_Yes'])
 
 # print(test_target)
 
@@ -110,6 +112,7 @@ percent_r2 = r2_score(y, y_predict_poly_reg)*100
 ######################################################################
 # Cross Validation
 # print(lin_reg.score(X_test, y_test))
+"""
 print(cross_val_score(poly_regression, X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
 print("The R2 score is : " + str(percent_r2) + "%")
 print("The MSE for the polynomial regression: ", mean_squared_error(y, y_predict_poly_reg))
@@ -117,14 +120,26 @@ print("The MSE for the linear regression", mean_squared_error(y, y_predict_lin_r
 print("The MAE for the polynomial regression :", mean_absolute_error(y, y_predict_poly_reg))# Note this is abs error
 print("The explained variance score for the polynomial regression: ", explained_variance_score(y, y_predict_poly_reg))
 print("The max error is for the poly regression is :", max_error(y, y_predict_poly_reg))
-
+"""
 # print(confusion_matrix(y, y_predict_poly_reg))
 # print(poly_regression.score(X_test, y_test))
 
 
-
 ######################################################################
 # Logistic Regression
+
+logit_regression = LogisticRegressionCV(cv=5, random_state=0).fit(train, train_target)
+
+
+
+###
+# Metrics to be used to measure logistic regression against:
+# Confusion matrix
+# accuracy
+# precision
+
+
+
 
 ######################################################################
 # Decision Trees
@@ -140,4 +155,5 @@ print("The max error is for the poly regression is :", max_error(y, y_predict_po
 
 ######################################################################
 # Show plots
+
 plt.show()
