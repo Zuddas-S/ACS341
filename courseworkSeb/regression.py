@@ -16,7 +16,7 @@ from sklearn.linear_model import *
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import *
-from sklearn import *
+
 
 
 
@@ -26,12 +26,12 @@ scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scale
 clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 clean_data = clean_data.astype('float')
 
-train, test = train_test_split(scaled_data, test_size=0.2)
+train, test = train_test_split(scaled_data, test_size=0.2) #using 20% of our data.
 
 train_target = train['Failed_Yes']
 test_target = test['Failed_Yes']
-train.drop(['Failed_Yes'])
-test.drop(['Failed_Yes'])
+train = train.drop('Failed_Yes', 1)
+test = test.drop('Failed_Yes', 1)
 
 # print(test_target)
 
@@ -127,8 +127,55 @@ print("The max error is for the poly regression is :", max_error(y, y_predict_po
 
 ######################################################################
 # Logistic Regression
+#
+# # Training set for logit
+# sorted_indices_logit = np.argsort(train)
+# logit_train = np.array(train)
+# logit_train_target = np.array(train_target)
+#
+# logit_train = np.reshape(logit_train, (-1, 1))
+# logit_train_target = np.reshape(logit_train_target, (-1, 1))
+# logit_train = logit_train[sorted_indices_logit]
+# logit_train_target = logit_train_target[sorted_indices_logit]
+#
 
-logit_regression = LogisticRegressionCV(cv=5, random_state=0).fit(train, train_target)
+# # Testing set for logit
+# sorted_indices_logit_test = np.argsort(test)
+# logit_test = np.array(test)
+# logit_test_target = np.array(test_target)
+#
+# logit_test = np.reshape(logit_test, (-1, 1))
+# logit_test_target = np.reshape(logit_test_target, (-1, 1))
+# logit_test = logit_test[sorted_indices_logit_test]
+# logit_test_target = logit_test_target[sorted_indices_logit_test]
+
+# we use a cv = 5 fold (cv generator used is stratified K-folds)
+logit_regression = LogisticRegressionCV(cv=5, random_state=0, max_iter=500).fit(train, np.ravel(train_target))
+# np.ravel()  ravel is used to flatten the array
+score = logit_regression.score(test, test_target)
+predictions = logit_regression.predict(test)
+print("The accuracy is: " + str(score*100) + "%")
+
+logit_confusion_matrix = confusion_matrix(test_target, predictions)
+# print(logit_confusion_matrix)
+plt.figure(figsize=(9, 9))
+sns.heatmap(logit_confusion_matrix, annot=True, fmt=".3f", linewidths=.5, square=True, cmap='Blues_r')
+plt.ylabel('Actual label')
+plt.xlabel('Predicted label')
+all_sample_title = 'Accuracy Score: {0}'.format(score)
+plt.title(all_sample_title, size=15)
+
+plt.figure()
+logit_accuracy = accuracy_score(test_target, predictions)
+print("The accuracy is given as: " + str(logit_accuracy*100)+"%")
+
+logit_precision = precision_score(test_target, predictions)
+print("The precision is given as: " + str(logit_precision*100)+"%")
+
+logit_recall = recall_score(test_target, predictions)
+print("The recall is given as: " + str(logit_recall*100)+"%")
+
+
 
 
 
