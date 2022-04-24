@@ -8,18 +8,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import *
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import *
 from sklearn import ensemble
 from sklearn import tree
-
-
 
 
 ##############################################
@@ -33,10 +29,8 @@ train, test = train_test_split(scaled_data, test_size=0.2) #using 20% of our dat
 
 train_target = train['Failed_Yes']
 test_target = test['Failed_Yes']
-train = train.drop('Failed_Yes', 1)
-test = test.drop('Failed_Yes', 1)
-
-
+train = train.drop('Failed_Yes', axis=1)
+test = test.drop('Failed_Yes', axis=1)
 
 
 ##############################################
@@ -52,7 +46,6 @@ tree.plot_tree(decision_tree)
 
 random_forest = ensemble.RandomForestClassifier()
 random_forest = random_forest.fit(train, train_target)
-
 
 
 #############################################
@@ -81,8 +74,5 @@ print("The precision is given as: " + str(tree_precision*100)+"%")
 
 tree_recall = recall_score(test_target, predictions)
 print("The recall is given as: " + str(tree_recall*100)+"%")
-
-
-
 
 plt.show()

@@ -30,8 +30,8 @@ train, test = train_test_split(scaled_data, test_size=0.2) #using 20% of our dat
 
 train_target = train['Failed_Yes']
 test_target = test['Failed_Yes']
-train = train.drop('Failed_Yes', 1)
-test = test.drop('Failed_Yes', 1)
+train = train.drop('Failed_Yes', axis=1)
+test = test.drop('Failed_Yes', axis=1)
 
 # print(test_target)
 
