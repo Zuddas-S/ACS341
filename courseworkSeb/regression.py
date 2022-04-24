@@ -19,127 +19,50 @@ from sklearn.metrics import *
 from sklearn.model_selection import *
 
 
+########################################################################################
+# Functions
+
+def data_sorting(
+        data,
+        target_title,
+        data_percentage,
+        print_data):
+
+    train, test = train_test_split(data, test_size=data_percentage)  # using data_percentage% of our data.
+    train_target = train[target_title]
+    test_target = test[target_title]
+    train = train.drop(target_title, axis=1)
+    test = test.drop(target_title, axis=1)
+    if not print_data:
+        return train, train_target, test, test_target
+    else:
+        return print(train, train_target, test, test_target)
 
 
-
-######################################################################
-# Split & Shuffle Dataset
-scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
-clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
-clean_data = clean_data.astype('float')
-
-train, test = train_test_split(scaled_data, test_size=0.2) #using 20% of our data.
-
-train_target = train['Failed_Yes']
-test_target = test['Failed_Yes']
-train = train.drop('Failed_Yes', axis=1)
-test = test.drop('Failed_Yes', axis=1)
-
-# print(test_target)
-
-######################################################################
-# https://github.com/ageron/handson-ml2/blob/master/04_training_linear_models.ipynb
-# Regression Model
-# Try mini-batch gradient descent.
-# predict TORQUE from ROTATIONAL SPEED
-
-y = train['Torque_Nm']
-X = train['Rotational_speed_rpm']
-y_test = test['Torque_Nm']
-X_test = test['Rotational_speed_rpm']
-
-##################################
-# Regression setup
-
-eta = 0.1
-m = 100
-theta_path_mgd = []
-n_iter = 50
-mini_batch_size = 20
-np.random.seed(42)
-theta = np.random.randn(2, 1)
-t0, t1 = 200, 1000
-
-##################################
-# start with a simple linear regression
-
-X_b = np.c_[np.ones((X.size, 1)), X] # Ensure the ones array that concatenates is the same size
-theta_best = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y) # standard eqn
-
-X_new = np.array([[0], [2]]) # Whats the reason for the xnew?
-X_new_b = np.c_[np.ones((2, 1)), X_new]  # add x0 = 1 to each instance
-y_predict = X_new_b.dot(theta_best)
-
-sns.scatterplot(x=X, y=y, data=train)
-lin_reg = LinearRegression()
-# print(X, y)
-# lesson: always turn into an array before fitting
-
-sorted_indices = np.argsort(X)
-sorted_indices_test = np.argsort(X_test)
-
-X = np.array(X)
-y = np.array(y)
-X = np.reshape(X, (-1, 1))
-y = np.reshape(y, (-1, 1))
-X = X[sorted_indices]
-y = y[sorted_indices]
-
-X_test = np.array(X_test)
-y_test = np.array(y_test)
-X_test = np.reshape(X_test, (-1, 1))
-y_test = np.reshape(y_test, (-1, 1))
-X_test = X_test[sorted_indices_test]
-y_test = y_test[sorted_indices_test]
-
-lin_reg.fit(X, y)
-y_predict_lin_reg = lin_reg.predict(X)
-
-plt.plot(X, y_predict_lin_reg, c="limegreen")
-
-degree = 3
-poly = PolynomialFeatures(degree=3, include_bias=False)
-
-# print(X.size, y.size)
-poly_features = poly.fit(X)
-poly_features = poly.transform(X)
-poly_regression = lin_reg.fit(poly_features, y)
-# poly_regression = lin_reg.predict(poly_features)
-
-y_predict_poly_reg = poly_regression.predict(poly_features)
-
-plt.plot(X, y_predict_poly_reg, c="red", linewidth=3)
-plt.legend(['Linear Regression', 'Polynomial Regression', 'Data'])
-plt.title("Polynomial regression with degree "+str(degree))
-percent_r2 = r2_score(y, y_predict_poly_reg)*100
-
-
-train_sizes, train_scores, test_scores, fit_times, _ = learning_curve(poly_regression, y_predict_poly_reg, y, cv=30, return_times=True)
-
-plt.figure()
-plt.plot(train_sizes, np.mean(train_scores, axis=1), c='red')
-plt.plot(train_sizes, np.mean(test_scores, axis=1), c='blue')
-
-
-plt.show()
-
-
-######################################################################
-# Cross Validation
-# print(lin_reg.score(X_test, y_test))
-
+# def df_to_sorted_array(
+#         data
+# ):
+#     # sorted_indices = np.argsort(X)
+#     # X = np.array(X)
+#     # X = np.reshape(X, (-1, 1))
+#     # X = X[sorted_indices]
+#     sorted_indices = np.argsort(data)
+#     arr = np.array(data).tolist()
+#     arr = np.reshape(arr, (-1, 1))
+#     arr = arr[sorted_indices]
+#     return arr
 
 
 def plot_learning_curve(
-    estimator,
-    title,
-    X,
-    y,
-    axes=None,
-    ylim=None,
-    cv=None,
-    n_jobs=None,
-    train_sizes=np.linspace(0.1, 1.0, 5),
+        estimator,
+        title,
+        X,
+        y,
+        axes=None,
+        ylim=None,
+        cv=None,
+        n_jobs=None,
+        train_sizes=np.linspace(0.1, 1.0, 5),
 ):
     if axes is None:
         _, axes = plt.subplots(1, 3, figsize=(20, 5))
@@ -224,6 +147,117 @@ def plot_learning_curve(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################################################################
+# Split & Shuffle Dataset
+scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
+# clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
+scaled_data = scaled_data.astype('float')
+
+train, train_target, test, test_target = data_sorting(scaled_data, 'Failed_Yes', 0.2, False)
+
+######################################################################
+# https://github.com/ageron/handson-ml2/blob/master/04_training_linear_models.ipynb
+# Regression Model
+# Try mini-batch gradient descent.
+# predict TORQUE from ROTATIONAL SPEED
+
+y = train['Torque_Nm']
+X = train['Rotational_speed_rpm']
+y_test = test['Torque_Nm']
+X_test = test['Rotational_speed_rpm']
+
+# X = df_to_sorted_array(X)
+# y = df_to_sorted_array(y)
+# X_test = df_to_sorted_array(X_test)
+# y_test = df_to_sorted_array(y_test)
+
+
+
+##################################
+# Regression setup
+plt.figure()
+sns.scatterplot(x=X, y=y, data=train)
+lin_reg = LinearRegression()
+
+
+# lesson: always turn into an array before fitting
+sorted_indices = np.argsort(X)
+sorted_indices_test = np.argsort(X_test)
+X = np.array(X)
+y = np.array(y)
+X = np.reshape(X, (-1, 1))
+y = np.reshape(y, (-1, 1))
+X = X[sorted_indices]
+y = y[sorted_indices]
+
+X_test = np.array(X_test)
+y_test = np.array(y_test)
+X_test = np.reshape(X_test, (-1, 1))
+y_test = np.reshape(y_test, (-1, 1))
+X_test = X_test[sorted_indices_test]
+y_test = y_test[sorted_indices_test]
+
+
+
+degree = 3
+poly = PolynomialFeatures(degree=3, include_bias=False)
+
+# print(X.size, y.size)
+poly_features = poly.fit(X)
+poly_features = poly.transform(X)
+poly_regression = lin_reg.fit(poly_features, y)
+# poly_regression = lin_reg.predict(poly_features)
+
+y_predict_poly_reg = poly_regression.predict(poly_features)
+lin_reg.fit(X, y)
+y_predict_lin_reg = lin_reg.predict(X)
+
+
+plt.plot(X, y_predict_lin_reg, c="limegreen")
+plt.plot(X, y_predict_poly_reg, c="red", linewidth=3)
+plt.legend(['Linear Regression', 'Polynomial Regression', 'Data'])
+plt.title("Polynomial regression with degree "+str(degree))
+percent_r2 = r2_score(y, y_predict_poly_reg)*100
+plt.figure()
+
+######################################################################
+# Cross Validation
+# print(lin_reg.score(X_test, y_test))
+
+
+cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
+
+plot_learning_curve(
+    poly_regression, 'Title', X, y, axes=None, ylim=None, cv=cv, n_jobs=None
+)
+
+
+
 """
 print(cross_val_score(poly_regression, X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
 print("The R2 score is : " + str(percent_r2) + "%")
@@ -233,9 +267,8 @@ print("The MAE for the polynomial regression :", mean_absolute_error(y, y_predic
 print("The explained variance score for the polynomial regression: ", explained_variance_score(y, y_predict_poly_reg))
 print("The max error is for the poly regression is :", max_error(y, y_predict_poly_reg))
 """
+
 # print(poly_regression.score(X_test, y_test))
-
-
 ######################################################################
 # Logistic Regression
 
@@ -269,11 +302,6 @@ print("The recall is given as: " + str(logit_recall*100)+"%")
 # print("The confusion matrix: ", logit_confusion_matrix)
 
 
-cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
-
-plot_learning_curve(
-    poly_regression, 'Title', X, y, axes=None, ylim=None, cv=cv, n_jobs=None
-)
 
 
 ###
@@ -281,18 +309,6 @@ plot_learning_curve(
 # Confusion matrix
 # accuracy
 # precision
-
-
-
-
-######################################################################
-# Decision Trees
-
-###################################
-# Random Forests
-
-######################################################################
-# Neural Nets
 
 ######################################################################
 # SVM
