@@ -16,6 +16,8 @@ from sklearn.linear_model import *
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import *
+from sklearn.model_selection import *
+
 
 
 
@@ -102,6 +104,8 @@ poly = PolynomialFeatures(degree=3, include_bias=False)
 poly_features = poly.fit(X)
 poly_features = poly.transform(X)
 poly_regression = lin_reg.fit(poly_features, y)
+# poly_regression = lin_reg.predict(poly_features)
+
 y_predict_poly_reg = poly_regression.predict(poly_features)
 
 plt.plot(X, y_predict_poly_reg, c="red", linewidth=3)
@@ -109,9 +113,117 @@ plt.legend(['Linear Regression', 'Polynomial Regression', 'Data'])
 plt.title("Polynomial regression with degree "+str(degree))
 percent_r2 = r2_score(y, y_predict_poly_reg)*100
 
+
+train_sizes, train_scores, test_scores, fit_times, _ = learning_curve(poly_regression, y_predict_poly_reg, y, cv=30, return_times=True)
+
+plt.figure()
+plt.plot(train_sizes, np.mean(train_scores, axis=1), c='red')
+plt.plot(train_sizes, np.mean(test_scores, axis=1), c='blue')
+
+
+plt.show()
+
+
 ######################################################################
 # Cross Validation
 # print(lin_reg.score(X_test, y_test))
+
+
+
+def plot_learning_curve(
+    estimator,
+    title,
+    X,
+    y,
+    axes=None,
+    ylim=None,
+    cv=None,
+    n_jobs=None,
+    train_sizes=np.linspace(0.1, 1.0, 5),
+):
+    if axes is None:
+        _, axes = plt.subplots(1, 3, figsize=(20, 5))
+
+    axes[0].set_title(title)
+    if ylim is not None:
+        axes[0].set_ylim(*ylim)
+    axes[0].set_xlabel("Training examples")
+    axes[0].set_ylabel("Score")
+
+    train_sizes, train_scores, test_scores, fit_times, _ = learning_curve(
+        estimator,
+        X,
+        y,
+        cv=cv,
+        n_jobs=n_jobs,
+        train_sizes=train_sizes,
+        return_times=True,
+    )
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+    test_scores_std = np.std(test_scores, axis=1)
+    fit_times_mean = np.mean(fit_times, axis=1)
+    fit_times_std = np.std(fit_times, axis=1)
+
+    # Plot learning curve
+    axes[0].grid()
+    axes[0].fill_between(
+        train_sizes,
+        train_scores_mean - train_scores_std,
+        train_scores_mean + train_scores_std,
+        alpha=0.1,
+        color="r",
+    )
+    axes[0].fill_between(
+        train_sizes,
+        test_scores_mean - test_scores_std,
+        test_scores_mean + test_scores_std,
+        alpha=0.1,
+        color="g",
+    )
+    axes[0].plot(
+        train_sizes, train_scores_mean, "o-", color="r", label="Training score"
+    )
+    axes[0].plot(
+        train_sizes, test_scores_mean, "o-", color="g", label="Cross-validation score"
+    )
+    axes[0].legend(loc="best")
+
+    # Plot n_samples vs fit_times
+    axes[1].grid()
+    axes[1].plot(train_sizes, fit_times_mean, "o-")
+    axes[1].fill_between(
+        train_sizes,
+        fit_times_mean - fit_times_std,
+        fit_times_mean + fit_times_std,
+        alpha=0.1,
+    )
+    axes[1].set_xlabel("Training examples")
+    axes[1].set_ylabel("fit_times")
+    axes[1].set_title("Scalability of the model")
+
+    # Plot fit_time vs score
+    fit_time_argsort = fit_times_mean.argsort()
+    fit_time_sorted = fit_times_mean[fit_time_argsort]
+    test_scores_mean_sorted = test_scores_mean[fit_time_argsort]
+    test_scores_std_sorted = test_scores_std[fit_time_argsort]
+    axes[2].grid()
+    axes[2].plot(fit_time_sorted, test_scores_mean_sorted, "o-")
+    axes[2].fill_between(
+        fit_time_sorted,
+        test_scores_mean_sorted - test_scores_std_sorted,
+        test_scores_mean_sorted + test_scores_std_sorted,
+        alpha=0.1,
+    )
+    axes[2].set_xlabel("fit_times")
+    axes[2].set_ylabel("Score")
+    axes[2].set_title("Performance of the model")
+
+    return plt
+
+
+
 """
 print(cross_val_score(poly_regression, X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
 print("The R2 score is : " + str(percent_r2) + "%")
@@ -121,33 +233,11 @@ print("The MAE for the polynomial regression :", mean_absolute_error(y, y_predic
 print("The explained variance score for the polynomial regression: ", explained_variance_score(y, y_predict_poly_reg))
 print("The max error is for the poly regression is :", max_error(y, y_predict_poly_reg))
 """
-# print(confusion_matrix(y, y_predict_poly_reg))
 # print(poly_regression.score(X_test, y_test))
 
 
 ######################################################################
 # Logistic Regression
-#
-# # Training set for logit
-# sorted_indices_logit = np.argsort(train)
-# logit_train = np.array(train)
-# logit_train_target = np.array(train_target)
-#
-# logit_train = np.reshape(logit_train, (-1, 1))
-# logit_train_target = np.reshape(logit_train_target, (-1, 1))
-# logit_train = logit_train[sorted_indices_logit]
-# logit_train_target = logit_train_target[sorted_indices_logit]
-#
-
-# # Testing set for logit
-# sorted_indices_logit_test = np.argsort(test)
-# logit_test = np.array(test)
-# logit_test_target = np.array(test_target)
-#
-# logit_test = np.reshape(logit_test, (-1, 1))
-# logit_test_target = np.reshape(logit_test_target, (-1, 1))
-# logit_test = logit_test[sorted_indices_logit_test]
-# logit_test_target = logit_test_target[sorted_indices_logit_test]
 
 # we use a cv = 5 fold (cv generator used is stratified K-folds)
 logit_regression = LogisticRegressionCV(cv=5, random_state=0, max_iter=500).fit(train, np.ravel(train_target))
@@ -175,8 +265,15 @@ print("The precision is given as: " + str(logit_precision*100)+"%")
 logit_recall = recall_score(test_target, predictions)
 print("The recall is given as: " + str(logit_recall*100)+"%")
 
+# logit_confusion_matrix = confusion_matrix(y, y_predict_poly_reg)
+# print("The confusion matrix: ", logit_confusion_matrix)
 
 
+cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
+
+plot_learning_curve(
+    poly_regression, 'Title', X, y, axes=None, ylim=None, cv=cv, n_jobs=None
+)
 
 
 ###
