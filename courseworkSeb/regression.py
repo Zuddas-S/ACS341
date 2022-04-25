@@ -197,10 +197,9 @@ X_test = test['Rotational_speed_rpm']
 # y_test = df_to_sorted_array(y_test)
 
 
-
 ##################################
 # Regression setup
-plt.figure()
+plt.figure(figsize=(9, 9))
 sns.scatterplot(x=X, y=y, data=train)
 lin_reg = LinearRegression()
 
@@ -223,15 +222,12 @@ X_test = X_test[sorted_indices_test]
 y_test = y_test[sorted_indices_test]
 
 
-
 degree = 3
-poly = PolynomialFeatures(degree=3, include_bias=False)
+poly = PolynomialFeatures(degree=degree, include_bias=False)
 
-# print(X.size, y.size)
 poly_features = poly.fit(X)
 poly_features = poly.transform(X)
 poly_regression = lin_reg.fit(poly_features, y)
-# poly_regression = lin_reg.predict(poly_features)
 
 y_predict_poly_reg = poly_regression.predict(poly_features)
 lin_reg.fit(X, y)
@@ -252,10 +248,7 @@ plt.figure()
 
 cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
 
-plot_learning_curve(
-    poly_regression, 'Title', X, y, axes=None, ylim=None, cv=cv, n_jobs=None
-)
-
+plot_learning_curve(poly_regression, 'Title', X, y, axes=None, ylim=None, cv=cv, n_jobs=None)
 
 
 """
