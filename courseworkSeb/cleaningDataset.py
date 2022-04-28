@@ -11,7 +11,6 @@ pd.set_option('display.max_colwidth', None)
 
 # Read in the original dataset
 failureDataset= pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/machine_failure_release.csv')
-# print(failureDataset.head())
 
 # Getting rid of redundant rows
 cleanDataset = failureDataset.replace('', np.nan)  # replaces '' with nan
@@ -24,12 +23,12 @@ cleanDataset['Process_temperature_K'] = cleanDataset['Process_temperature_K'].as
 cleanDataset['Rotational_speed_rpm'] = cleanDataset['Rotational_speed_rpm'].astype('int')
 cleanDataset['Torque_Nm'] = cleanDataset['Torque_Nm'].astype('float')
 cleanDataset['Tool_wear_min'] = cleanDataset['Tool_wear_min'].astype('int')
-
 cleanDataset['Machine_failure'] = cleanDataset['Machine_failure'].map({'Failure': 'Yes', 'No_Failure': 'No'})
 
+#####################################################################################
+# Plotting correlation matrix
 corr = cleanDataset.apply(lambda x: x.factorize()[0]).corr()
-# corr.style.background_gradient(cmap='coolwarm')
-
+# lambda fcn to see correlation between non numeric features
 
 f = plt.figure(figsize=(30, 25))
 ax = sns.heatmap(corr,
@@ -51,9 +50,10 @@ cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)
 plt.title('Correlation Matrix', fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/correlation_figure.png')
-#plt.show()
+
 
 #####################################################################################
+# Processing
 
 cleanDataset.drop('Product_ID', inplace=True, axis=1)
 cleanDataset.drop('Process_temperature_K', inplace=True, axis=1)
@@ -65,68 +65,17 @@ cleanDataset = pd.concat([cleanDataset, one_hot_type, one_hot_failure], axis=1)
 cleanDataset.drop('Product_Type', inplace=True, axis=1)
 cleanDataset.drop('Machine_failure', inplace=True, axis=1)
 
-#print(cleanDataset.head())
-# Now the product type and the machine failure are one hot encoded!!
-
-
 
 x = cleanDataset
 min_max_scalar = preprocessing.MinMaxScaler()
 x_scaled = min_max_scalar.fit_transform(x)
 scaledDataset = pd.DataFrame(x_scaled)
-#scaledDataset = scaledDataset.set_axis(['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes'], axis=1, inplace=False)
+# scaledDataset = scaledDataset.set_axis(['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes'], axis=1, inplace=False)
 scaledDataset.columns = ['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes']
-# print(scaledDataset.head())
-# print(cleanDataset.head())
-
-
-
-## Dataset needs to be split into training and testing data.
-# https://www.analyticsvidhya.com/blog/2018/08/dimensionality-reduction-techniques-python/
-
-#################################################
-# Forward and backward feature elimination
-
-##
-# We start with backward
-
-
 
 # Save the cleaned dataset
 # cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 # scaledDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-print(cleanDataset.isnull().sum())#check to see if there are no nans
-dfShuffled=shuffle(cleanDataset)
-dfShuffled['Rotational_speed_rpm'] = dfShuffled['Rotational_speed_rpm'].astype(float)
-dfShuffled['Torque [Nm]']=dfShuffled['Torque_Nm'].astype(float)
-
-sns.barplot(x='Product Type',y='Tool wear [min]',data=cleanDataset)
-sns.scatterplot(x='Torque [Nm]',y='Tool wear [min]',hue='Air temperature [K]',data=cleanDataset)
-cleanDataset=cleanDataset.sort_values(by='Machine failure')#sorts the dataset over the column selected by=''
-ax=sns.regplot(x='Rotational_speed_rpm',y='Torque_Nm',order=3,data=dfShuffled)
-ax=sns.scatterplot(x='Rotational speed [rpm]',y='Torque [Nm]',hue='Product Type',data=dfShuffled)
-ax.set(xlabel='x Label',ylabel='y Label')
-plt.show()
-
-grid = sns.FacetGrid(data=cleanDataset, col='Tool wear [min]', col_wrap=1, height=4, aspect=.75)
-#
-grid.map(sns.scatterplot,'Torque [Nm]')
-#plt.legend(labels=['temp','priceActual'])
-plt.show()
-"""
+# plt.show()
 
