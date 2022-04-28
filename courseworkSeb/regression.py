@@ -4,16 +4,15 @@ Header
 
 
 """
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import *
 from sklearn.linear_model import *
-from sklearn.pipeline import *
 from sklearn.metrics import *
 from sklearn.model_selection import *
-from sklearn.feature_selection import *
 
 ########################################################################################
 # Global Variables
@@ -39,19 +38,6 @@ def data_sorting(
     else:
         return print(train, train_target, test, test_target)
 
-
-# def df_to_sorted_array(
-#         data
-# ):
-#     # sorted_indices = np.argsort(X)
-#     # X = np.array(X)
-#     # X = np.reshape(X, (-1, 1))
-#     # X = X[sorted_indices]
-#     sorted_indices = np.argsort(data)
-#     arr = np.array(data).tolist()
-#     arr = np.reshape(arr, (-1, 1))
-#     arr = arr[sorted_indices]
-#     return arr
 
 def plot_learning_curve(
         estimator,
@@ -145,37 +131,11 @@ def plot_learning_curve(
     return plt
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ######################################################################
 # Split & Shuffle Dataset
 scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
 clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 scaled_data = scaled_data.astype('float')
-
 train, train_target, test, test_target = data_sorting(scaled_data, 'Failed_Yes', 0.2, False)
 
 ######################################################################
@@ -188,11 +148,6 @@ y = train['Torque_Nm']
 X = train['Rotational_speed_rpm']
 y_test = test['Torque_Nm']
 X_test = test['Rotational_speed_rpm']
-
-# X = df_to_sorted_array(X)
-# y = df_to_sorted_array(y)
-# X_test = df_to_sorted_array(X_test)
-# y_test = df_to_sorted_array(y_test)
 
 
 ##################################
@@ -269,9 +224,6 @@ print("The MSE for the linear regression: " + str(mean_squared_error(y, y_predic
 print("The MAE for the polynomial regression: " + str(mean_absolute_error(y, y_predict_poly_reg)*100) + "%")# Note this is abs error
 print("The MAE for the linear regression: " + str(mean_absolute_error(y, y_predict_lin_reg)*100) +"%")# Note this is abs error
 
-# print("The explained variance score for the polynomial regression: " + str(explained_variance_score(y, y_predict_poly_reg)*100) + "%")
-# print("The explained variance score for the linear regression: " + str(explained_variance_score(y, y_predict_lin_reg)*100) + "%")
-
 print("The max error is for the poly regression is: " + str(max_error(y, y_predict_poly_reg)*100) + "%")
 print("The max error is for the poly linear is: " + str(max_error(y, y_predict_lin_reg)*100) + "%")
 
@@ -282,21 +234,12 @@ print("The max error is for the poly linear is: " + str(max_error(y, y_predict_l
 # we use a cv = 5 fold (cv generator used is stratified K-folds)
 
 logit_regression = LogisticRegressionCV(cv=5, random_state=0, max_iter=500).fit(train, np.ravel(train_target))
-# np.ravel()  ravel is used to flatten the array
 
 score = logit_regression.score(test, test_target)
 predictions = logit_regression.predict(test)
 
 logit_confusion_matrix = confusion_matrix(test_target, predictions)
 cmn = 100*logit_confusion_matrix.astype('float') / logit_confusion_matrix.sum(axis=1)[:, np.newaxis]  # normalise confusion matrix
-
-# plt.figure()
-# Xs = [i for i in range(len(train))]
-# Ys = [logit_regression.predict_proba([[value]])[0][1] for value in range(len(train))]
-#
-# plt.plot(Xs, Ys, color='red')
-# print(logit_confusion_matrix)
-
 
 f = plt.figure(figsize=(30, 25))
 ax = sns.heatmap(cmn,
@@ -331,12 +274,6 @@ print("The logit recall is given as: " + str(logit_recall*100)+"%")
 logit_confusion_matrix = confusion_matrix(test_target, predictions)
 print("The confusion matrix: ", logit_confusion_matrix)
 
-
-###
-# Metrics to be used to measure logistic regression against:
-# Confusion matrix
-# accuracy
-# precision
 
 ######################################################################
 # Show plots

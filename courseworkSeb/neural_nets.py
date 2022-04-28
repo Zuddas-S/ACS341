@@ -8,16 +8,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import *
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_val_score
 from sklearn.metrics import *
 from sklearn.neural_network import MLPClassifier
-from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import *
 
 
@@ -56,7 +48,6 @@ parameter_space = {
 Best params: 
   {'activation': 'tanh', 'alpha': 0.001, 'hidden_layer_sizes': (20,), 'learning_rate': 'constant', 'solver': 'lbfgs'}
 """
-
 
 # print('Best params: \n', clf.best_params_)
 
