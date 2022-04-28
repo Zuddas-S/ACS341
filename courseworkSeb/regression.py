@@ -307,7 +307,7 @@ ax = sns.heatmap(cmn,
                  vmax=100,
                  square=True,
                  cmap='flare',
-                 annot_kws={"size": 70 / np.sqrt(len(cmn))})
+                 annot_kws={"size": 100 / np.sqrt(len(cmn))})
 
 
 plt.ylabel('Actual label %', fontsize=45)

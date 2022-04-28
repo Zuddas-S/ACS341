@@ -105,7 +105,7 @@ ax = sns.heatmap(cmn,
                  vmax=100,
                  square=True,
                  cmap='flare',
-                 annot_kws={"size": 70 / np.sqrt(len(net_confusion_matrix_opt))})
+                 annot_kws={"size": 100 / np.sqrt(len(net_confusion_matrix_opt))})
 
 plt.ylabel('Actual label %', fontsize=45)
 plt.xlabel('Predicted label %', fontsize=45)
