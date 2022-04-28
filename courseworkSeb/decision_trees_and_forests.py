@@ -110,9 +110,11 @@ print("The accuracy is: " + str(score*100) + "%")
 
 tree_confusion_matrix = confusion_matrix(test_target, predictions)
 
+cmn = 100*tree_confusion_matrix.astype('float') / tree_confusion_matrix.sum(axis=1)[:, np.newaxis]  # normalise confusion matrix
+
 # print(tree_confusion_matrix)
 f = plt.figure(figsize=(30, 25))
-ax = sns.heatmap(tree_confusion_matrix,
+ax = sns.heatmap(cmn,
                  annot=True,
                  fmt=".3f",
                  linewidths=1,
@@ -120,11 +122,11 @@ ax = sns.heatmap(tree_confusion_matrix,
                  vmax=100,
                  square=True,
                  cmap='flare',
-                 annot_kws={"size": 70 / np.sqrt(len(tree_confusion_matrix))})
+                 annot_kws={"size": 70 / np.sqrt(len(cmn))})
 
 
-plt.ylabel('Actual label', fontsize=45)
-plt.xlabel('Predicted label', fontsize=45)
+plt.ylabel('Actual label %', fontsize=45)
+plt.xlabel('Predicted label %', fontsize=45)
 all_sample_title = 'Decision Tree Confusion Matrix'
 cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)

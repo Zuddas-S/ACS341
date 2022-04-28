@@ -279,23 +279,27 @@ print("The max error is for the poly linear is: " + str(max_error(y, y_predict_l
 # print(poly_regression.score(X_test, y_test))
 ######################################################################
 # Logistic Regression
-# https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html
 # we use a cv = 5 fold (cv generator used is stratified K-folds)
 
 logit_regression = LogisticRegressionCV(cv=5, random_state=0, max_iter=500).fit(train, np.ravel(train_target))
 # np.ravel()  ravel is used to flatten the array
 
-# Used to ID relevant features
-# selector = RFE(logit_regression, n_features_to_select=len(test.columns), step=1)
-# selector = selector.fit(test, test_target)
-
 score = logit_regression.score(test, test_target)
 predictions = logit_regression.predict(test)
 
 logit_confusion_matrix = confusion_matrix(test_target, predictions)
+cmn = 100*logit_confusion_matrix.astype('float') / logit_confusion_matrix.sum(axis=1)[:, np.newaxis]  # normalise confusion matrix
+
+# plt.figure()
+# Xs = [i for i in range(len(train))]
+# Ys = [logit_regression.predict_proba([[value]])[0][1] for value in range(len(train))]
+#
+# plt.plot(Xs, Ys, color='red')
 # print(logit_confusion_matrix)
+
+
 f = plt.figure(figsize=(30, 25))
-ax = sns.heatmap(logit_confusion_matrix,
+ax = sns.heatmap(cmn,
                  annot=True,
                  fmt=".3f",
                  linewidths=1,
@@ -303,11 +307,11 @@ ax = sns.heatmap(logit_confusion_matrix,
                  vmax=100,
                  square=True,
                  cmap='flare',
-                 annot_kws={"size": 70 / np.sqrt(len(logit_confusion_matrix))})
+                 annot_kws={"size": 70 / np.sqrt(len(cmn))})
 
 
-plt.ylabel('Actual label', fontsize=45)
-plt.xlabel('Predicted label', fontsize=45)
+plt.ylabel('Actual label %', fontsize=45)
+plt.xlabel('Predicted label %', fontsize=45)
 all_sample_title = 'Logistic Regression Confusion Matrix'
 cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)
