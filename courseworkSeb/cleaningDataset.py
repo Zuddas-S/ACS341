@@ -92,23 +92,9 @@ print(cleanDataset.head())
 
 
 
-###################################################
-# PCA
-
-
-#################################################
-# Random forest
-from sklearn.ensemble import RandomForestRegressor
-model = RandomForestRegressor(random_state=1, max_depth=10)
-model.fit(scaledDataset, scaledDataset.Failed_Yes)
-
-
-
-
-
 # Save the cleaned dataset
-cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
-scaledDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
+# cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
+# scaledDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
 
 
 
@@ -143,3 +129,4 @@ grid.map(sns.scatterplot,'Torque [Nm]')
 #plt.legend(labels=['temp','priceActual'])
 plt.show()
 """
+

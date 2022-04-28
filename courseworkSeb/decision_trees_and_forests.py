@@ -9,10 +9,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.pipeline import make_pipeline
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_val_score
 from sklearn.metrics import *
 from sklearn import ensemble
 from sklearn import tree
@@ -39,7 +35,6 @@ decision_tree = tree.DecisionTreeClassifier()
 decision_tree = decision_tree.fit(train, train_target)
 plt.figure(figsize=(15, 15))
 tree.plot_tree(decision_tree)
-
 
 ##############################################
 # Random forests

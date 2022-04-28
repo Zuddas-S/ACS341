@@ -8,15 +8,16 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import *
 from sklearn.linear_model import *
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_val_score
+from sklearn.pipeline import *
 from sklearn.metrics import *
 from sklearn.model_selection import *
+from sklearn.feature_selection import *
+
+########################################################################################
+# Global Variables
+fontsize = 20
 
 
 ########################################################################################
@@ -51,7 +52,6 @@ def data_sorting(
 #     arr = np.reshape(arr, (-1, 1))
 #     arr = arr[sorted_indices]
 #     return arr
-
 
 def plot_learning_curve(
         estimator,
@@ -142,9 +142,7 @@ def plot_learning_curve(
     axes[2].set_xlabel("fit_times")
     axes[2].set_ylabel("Score")
     axes[2].set_title("Performance of the model")
-
     return plt
-
 
 
 
@@ -175,7 +173,7 @@ def plot_learning_curve(
 ######################################################################
 # Split & Shuffle Dataset
 scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
-# clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
+clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 scaled_data = scaled_data.astype('float')
 
 train, train_target, test, test_target = data_sorting(scaled_data, 'Failed_Yes', 0.2, False)
@@ -199,9 +197,9 @@ X_test = test['Rotational_speed_rpm']
 
 ##################################
 # Regression setup
+
 plt.figure(figsize=(9, 9))
 sns.scatterplot(x=X, y=y, data=train)
-lin_reg = LinearRegression()
 
 
 # lesson: always turn into an array before fitting
@@ -221,56 +219,77 @@ y_test = np.reshape(y_test, (-1, 1))
 X_test = X_test[sorted_indices_test]
 y_test = y_test[sorted_indices_test]
 
+# Linear Regression
+lin_reg = LinearRegression()
+lin_reg.fit(X, y)
+y_predict_lin_reg = lin_reg.predict(X)
+print("Cross validation score for linear regression using neg MSE = \n", cross_val_score(lin_reg, X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
 
+plt.plot(X, y_predict_lin_reg, c="limegreen")
+
+
+# Polynomial Regression
 degree = 3
 poly = PolynomialFeatures(degree=degree, include_bias=False)
 
 poly_features = poly.fit(X)
 poly_features = poly.transform(X)
 poly_regression = lin_reg.fit(poly_features, y)
-
 y_predict_poly_reg = poly_regression.predict(poly_features)
-lin_reg.fit(X, y)
-y_predict_lin_reg = lin_reg.predict(X)
+print("Cross validation score for polynomial regression using neg MSE = \nc", cross_val_score(poly_regression, X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
 
-
-plt.plot(X, y_predict_lin_reg, c="limegreen")
 plt.plot(X, y_predict_poly_reg, c="red", linewidth=3)
-plt.legend(['Linear Regression', 'Polynomial Regression', 'Data'])
-plt.title("Polynomial regression with degree "+str(degree))
-percent_r2 = r2_score(y, y_predict_poly_reg)*100
-plt.figure()
+plt.legend(['Raw Data', 'Linear Regression', 'Polynomial Regression (3rd order)'], prop={'size': 15})
+plt.title("Polynomial regression with degree 1 and "+str(degree), fontsize=fontsize)
+plt.xlabel("Rotational Speed (rpm)", fontsize=fontsize*2/3)
+plt.ylabel("Torque (Nm)", fontsize=fontsize*2/3)
+plt.savefig("/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/regression_figure.png")
 
 ######################################################################
 # Cross Validation
-# print(lin_reg.score(X_test, y_test))
+
+cv = ShuffleSplit(n_splits=150, test_size=0.2, random_state=0)
+
+plot_learning_curve(poly_regression, 'Learning Curves With Polynomial of Degree: ' + str(degree), X, y, ylim=None, cv=cv, n_jobs=5)
+
+plot_learning_curve(lin_reg, 'Learning Curves With Polynomial of Degree: '+str(1), X, y, ylim=None, cv=cv, n_jobs=5)
 
 
-cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
+print("Poly Coeffs: " + str(poly_regression.coef_) +"\nPoly intercept: " + str(poly_regression.intercept_))
 
-plot_learning_curve(poly_regression, 'Title', X, y, axes=None, ylim=None, cv=cv, n_jobs=None)
+print("The R2 score for poly Regression is : " + str(r2_score(y, y_predict_poly_reg)*100) + "%")
+print("The R2 score for linear Regression is : " + str(r2_score(y, y_predict_lin_reg)*100) + "%")
 
+print("The MSE for the polynomial regression: " + str(mean_squared_error(y, y_predict_poly_reg)*100) + "%")
+print("The MSE for the linear regression: " + str(mean_squared_error(y, y_predict_lin_reg)*100) + "%")
 
-"""
-print(cross_val_score(poly_regression, X_test, y_test, cv=5, scoring='neg_mean_squared_error'))
-print("The R2 score is : " + str(percent_r2) + "%")
-print("The MSE for the polynomial regression: ", mean_squared_error(y, y_predict_poly_reg))
-print("The MSE for the linear regression", mean_squared_error(y, y_predict_lin_reg))
-print("The MAE for the polynomial regression :", mean_absolute_error(y, y_predict_poly_reg))# Note this is abs error
-print("The explained variance score for the polynomial regression: ", explained_variance_score(y, y_predict_poly_reg))
-print("The max error is for the poly regression is :", max_error(y, y_predict_poly_reg))
-"""
+print("The MSE for the polynomial regression: " + str(mean_squared_error(y, y_predict_poly_reg)*100) + "%")
+print("The MSE for the linear regression: " + str(mean_squared_error(y, y_predict_lin_reg)*100) + "%")
+
+print("The MAE for the polynomial regression: " + str(mean_absolute_error(y, y_predict_poly_reg)*100) + "%")# Note this is abs error
+print("The MAE for the linear regression: " + str(mean_absolute_error(y, y_predict_lin_reg)*100) +"%")# Note this is abs error
+
+# print("The explained variance score for the polynomial regression: " + str(explained_variance_score(y, y_predict_poly_reg)*100) + "%")
+# print("The explained variance score for the linear regression: " + str(explained_variance_score(y, y_predict_lin_reg)*100) + "%")
+
+print("The max error is for the poly regression is: " + str(max_error(y, y_predict_poly_reg)*100) + "%")
+print("The max error is for the poly linear is: " + str(max_error(y, y_predict_lin_reg)*100) + "%")
+
 
 # print(poly_regression.score(X_test, y_test))
 ######################################################################
 # Logistic Regression
-
+# https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html
 # we use a cv = 5 fold (cv generator used is stratified K-folds)
+
 logit_regression = LogisticRegressionCV(cv=5, random_state=0, max_iter=500).fit(train, np.ravel(train_target))
 # np.ravel()  ravel is used to flatten the array
+
+selector = RFE(logit_regression, n_features_to_select=len(test.columns), step=1)
+selector = selector.fit(test, test_target)
+
 score = logit_regression.score(test, test_target)
 predictions = logit_regression.predict(test)
-print("The accuracy is: " + str(score*100) + "%")
 
 logit_confusion_matrix = confusion_matrix(test_target, predictions)
 # print(logit_confusion_matrix)
@@ -282,19 +301,18 @@ all_sample_title = 'Accuracy Score: {0}'.format(score)
 plt.title(all_sample_title, size=15)
 
 plt.figure()
+
 logit_accuracy = accuracy_score(test_target, predictions)
-print("The accuracy is given as: " + str(logit_accuracy*100)+"%")
+print("The logit accuracy is given as: " + str(logit_accuracy*100)+"%")
 
 logit_precision = precision_score(test_target, predictions)
-print("The precision is given as: " + str(logit_precision*100)+"%")
+print("The logit precision is given as: " + str(logit_precision*100)+"%")
 
 logit_recall = recall_score(test_target, predictions)
-print("The recall is given as: " + str(logit_recall*100)+"%")
+print("The logit recall is given as: " + str(logit_recall*100)+"%")
 
-# logit_confusion_matrix = confusion_matrix(y, y_predict_poly_reg)
-# print("The confusion matrix: ", logit_confusion_matrix)
-
-
+logit_confusion_matrix = confusion_matrix(test_target, predictions)
+print("The confusion matrix: ", logit_confusion_matrix)
 
 
 ###
@@ -302,9 +320,6 @@ print("The recall is given as: " + str(logit_recall*100)+"%")
 # Confusion matrix
 # accuracy
 # precision
-
-######################################################################
-# SVM
 
 ######################################################################
 # Show plots
