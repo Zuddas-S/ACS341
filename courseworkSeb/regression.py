@@ -293,14 +293,26 @@ predictions = logit_regression.predict(test)
 
 logit_confusion_matrix = confusion_matrix(test_target, predictions)
 # print(logit_confusion_matrix)
-plt.figure(figsize=(9, 9))
-sns.heatmap(logit_confusion_matrix, annot=True, fmt=".3f", linewidths=.5, square=True, cmap='Blues_r')
-plt.ylabel('Actual label')
-plt.xlabel('Predicted label')
-all_sample_title = 'Accuracy Score: {0}'.format(score)
-plt.title(all_sample_title, size=15)
+f = plt.figure(figsize=(30, 25))
+ax = sns.heatmap(logit_confusion_matrix,
+                 annot=True,
+                 fmt=".3f",
+                 linewidths=1,
+                 vmin=0,
+                 vmax=100,
+                 square=True,
+                 cmap='flare',
+                 annot_kws={"size": 70 / np.sqrt(len(logit_confusion_matrix))})
 
-plt.figure()
+
+plt.ylabel('Actual label', fontsize=45)
+plt.xlabel('Predicted label', fontsize=45)
+all_sample_title = 'Logistic Regression Confusion Matrix'
+cax = plt.gcf().axes[-1]
+cax.tick_params(labelsize=50)
+plt.title(all_sample_title, fontsize=50)
+f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/logit_corr_matrix.png')
+
 
 logit_accuracy = accuracy_score(test_target, predictions)
 print("The logit accuracy is given as: " + str(logit_accuracy*100)+"%")

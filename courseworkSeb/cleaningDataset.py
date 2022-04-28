@@ -11,12 +11,12 @@ pd.set_option('display.max_colwidth', None)
 
 # Read in the original dataset
 failureDataset= pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/machine_failure_release.csv')
-#print(failureDataset.head())
+# print(failureDataset.head())
 
 # Getting rid of redundant rows
-cleanDataset = failureDataset.replace('',np.nan) # replaces '' with nan
-cleanDataset = cleanDataset.replace('?',np.nan) # replaces '?' with nan
-cleanDataset = cleanDataset.dropna() # drops all rows with nan
+cleanDataset = failureDataset.replace('', np.nan)  # replaces '' with nan
+cleanDataset = cleanDataset.replace('?', np.nan)  # replaces '?' with nan
+cleanDataset = cleanDataset.dropna()  # drops all rows with nan
 
 # Changing types form objects to numeric
 cleanDataset['Air_temperature_K'] = cleanDataset['Air_temperature_K'].astype('float')
@@ -33,16 +33,16 @@ corr = cleanDataset.apply(lambda x: x.factorize()[0]).corr()
 
 f = plt.figure(figsize=(30, 25))
 ax = sns.heatmap(corr,
-            xticklabels=corr.columns.values,
-            yticklabels=corr.columns.values,
-            annot=True,
-            vmin=-1,
-            vmax=1,
-            linewidths=1,
-            linecolor='black',
-            cbar=True,
-            cbar_kws={'label': 'Correlation' },
-            annot_kws={"size": 70 / np.sqrt(len(corr))})
+                 xticklabels=corr.columns.values,
+                 yticklabels=corr.columns.values,
+                 annot=True,
+                 vmin=-1,
+                 vmax=1,
+                 linewidths=1,
+                 linecolor='black',
+                 cbar=True,
+                 cbar_kws={'label': 'Correlation'},
+                 annot_kws={"size": 70 / np.sqrt(len(corr))})
 
 plt.xticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24, rotation=30)
 plt.yticks(range(cleanDataset.shape[1]), cleanDataset.columns, fontsize=24, rotation=-30)
@@ -76,8 +76,8 @@ x_scaled = min_max_scalar.fit_transform(x)
 scaledDataset = pd.DataFrame(x_scaled)
 #scaledDataset = scaledDataset.set_axis(['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes'], axis=1, inplace=False)
 scaledDataset.columns = ['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes']
-print(scaledDataset.head())
-print(cleanDataset.head())
+# print(scaledDataset.head())
+# print(cleanDataset.head())
 
 
 
