@@ -285,8 +285,9 @@ print("The max error is for the poly linear is: " + str(max_error(y, y_predict_l
 logit_regression = LogisticRegressionCV(cv=5, random_state=0, max_iter=500).fit(train, np.ravel(train_target))
 # np.ravel()  ravel is used to flatten the array
 
-selector = RFE(logit_regression, n_features_to_select=len(test.columns), step=1)
-selector = selector.fit(test, test_target)
+# Used to ID relevant features
+# selector = RFE(logit_regression, n_features_to_select=len(test.columns), step=1)
+# selector = selector.fit(test, test_target)
 
 score = logit_regression.score(test, test_target)
 predictions = logit_regression.predict(test)
