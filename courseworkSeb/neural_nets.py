@@ -1,8 +1,9 @@
 """
 Header
-
-
-
+Sebastiano Zuddas 2022
+Program to make a MLP Classifier. Uses hyperparameter tuning methods to ensure the model
+appropriate. Application is in tool condition monitoring.
+Hyperparameter tuning commented out to save computational resources
 """
 import pandas as pd
 import numpy as np
@@ -12,21 +13,16 @@ from sklearn.metrics import *
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import *
 
-
-
 ######################################################################
 # Split & Shuffle Dataset
 scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
 clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 clean_data = clean_data.astype('float')
-
 train, test = train_test_split(scaled_data, test_size=0.2) #using 20% of our data.
-
 train_target = train['Failed_Yes']
 test_target = test['Failed_Yes']
 train = train.drop('Failed_Yes', axis=1)
 test = test.drop('Failed_Yes', axis=1)
-
 
 ######################################################################
 # Tuning
@@ -45,15 +41,11 @@ parameter_space = {
 # clf = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=5)
 # clf.fit(train, train_target)  # X is train samples and y is the corresponding labels
 
-
-
 # print('Best params: \n', clf.best_params_)
-
 """
 Best params: 
   {'activation': 'tanh', 'alpha': 0.001, 'hidden_layer_sizes': (20,), 'learning_rate': 'constant', 'solver': 'lbfgs'}
 """
-
 
 ######################################################################
 # Optimal MLP Classifier based on hyperparams

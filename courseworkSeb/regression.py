@@ -1,8 +1,11 @@
 """
 Header
-
-
-
+Sebastiano Zuddas 2022
+Program to make a logistic regression Classifier as well as perform linear regression to find
+torque from the rotational speed of a tool. No hyperparameter tuning
+applied other than looking at the data and seeing the cubic
+relationship. Application is in tool condition monitoring.
+Hyperparameter tuning commented out to save computational resources
 """
 
 import pandas as pd
@@ -17,7 +20,6 @@ from sklearn.model_selection import *
 ########################################################################################
 # Global Variables
 fontsize = 20
-
 
 ########################################################################################
 # Functions
@@ -130,7 +132,6 @@ def plot_learning_curve(
     axes[2].set_title("Performance of the model")
     return plt
 
-
 ######################################################################
 # Split & Shuffle Dataset
 scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
@@ -139,25 +140,17 @@ scaled_data = scaled_data.astype('float')
 train, train_target, test, test_target = data_sorting(scaled_data, 'Failed_Yes', 0.2, False)
 
 ######################################################################
-# https://github.com/ageron/handson-ml2/blob/master/04_training_linear_models.ipynb
-# Regression Model
-# Try mini-batch gradient descent.
-# predict TORQUE from ROTATIONAL SPEED
+# Regression setup
 
 y = train['Torque_Nm']
 X = train['Rotational_speed_rpm']
 y_test = test['Torque_Nm']
 X_test = test['Rotational_speed_rpm']
 
-
-##################################
-# Regression setup
-
 plt.figure(figsize=(9, 9))
 sns.scatterplot(x=X, y=y, data=train)
 
-
-# lesson: always turn into an array before fitting
+# always turn into an array before fitting
 sorted_indices = np.argsort(X)
 sorted_indices_test = np.argsort(X_test)
 X = np.array(X)
@@ -182,7 +175,6 @@ print("Cross validation score for linear regression using neg MSE = \n", cross_v
 
 plt.plot(X, y_predict_lin_reg, c="limegreen")
 
-
 # Polynomial Regression
 degree = 3
 poly = PolynomialFeatures(degree=degree, include_bias=False)
@@ -204,11 +196,8 @@ plt.savefig("/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/re
 # Cross Validation
 
 cv = ShuffleSplit(n_splits=150, test_size=0.2, random_state=0)
-
 plot_learning_curve(poly_regression, 'Learning Curves With Polynomial of Degree: ' + str(degree), X, y, ylim=None, cv=cv, n_jobs=5)
-
 plot_learning_curve(lin_reg, 'Learning Curves With Polynomial of Degree: '+str(1), X, y, ylim=None, cv=cv, n_jobs=5)
-
 
 print("Poly Coeffs: " + str(poly_regression.coef_) +"\nPoly intercept: " + str(poly_regression.intercept_))
 
@@ -226,7 +215,6 @@ print("The MAE for the linear regression: " + str(mean_absolute_error(y, y_predi
 
 print("The max error is for the poly regression is: " + str(max_error(y, y_predict_poly_reg)*100) + "%")
 print("The max error is for the poly linear is: " + str(max_error(y, y_predict_lin_reg)*100) + "%")
-
 
 # print(poly_regression.score(X_test, y_test))
 ######################################################################
@@ -252,7 +240,6 @@ ax = sns.heatmap(cmn,
                  cmap='flare',
                  annot_kws={"size": 100 / np.sqrt(len(cmn))})
 
-
 plt.ylabel('Actual label %', fontsize=45)
 plt.xlabel('Predicted label %', fontsize=45)
 all_sample_title = 'Logistic Regression Confusion Matrix'
@@ -261,21 +248,15 @@ cax.tick_params(labelsize=50)
 plt.title(all_sample_title, fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/logit_corr_matrix.png')
 
-
 logit_accuracy = accuracy_score(test_target, predictions)
 print("The logit accuracy is given as: " + str(logit_accuracy*100)+"%")
-
 logit_precision = precision_score(test_target, predictions)
 print("The logit precision is given as: " + str(logit_precision*100)+"%")
-
 logit_recall = recall_score(test_target, predictions)
 print("The logit recall is given as: " + str(logit_recall*100)+"%")
-
 logit_confusion_matrix = confusion_matrix(test_target, predictions)
 print("The confusion matrix: ", logit_confusion_matrix)
 
-
 ######################################################################
 # Show plots
-
-plt.show()
+# plt.show()

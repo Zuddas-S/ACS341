@@ -1,3 +1,10 @@
+"""
+
+Sebastiano Zuddas 2022
+Program to clean the dataset provided using pandas.
+
+"""
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,7 +58,6 @@ cax.tick_params(labelsize=50)
 plt.title('Correlation Matrix', fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/correlation_figure.png')
 
-
 #####################################################################################
 # Processing
 
@@ -70,12 +76,10 @@ x = cleanDataset
 min_max_scalar = preprocessing.MinMaxScaler()
 x_scaled = min_max_scalar.fit_transform(x)
 scaledDataset = pd.DataFrame(x_scaled)
-# scaledDataset = scaledDataset.set_axis(['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes'], axis=1, inplace=False)
 scaledDataset.columns = ['Air_temperature_K',  'Rotational_speed_rpm',  'Torque_Nm',  'Tool_wear_min', 'Type_H',  'Type_L',  'Type_M',  'Failed_Yes']
 
 # Save the cleaned dataset
 # cleanDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 # scaledDataset.to_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
-
 # plt.show()
 

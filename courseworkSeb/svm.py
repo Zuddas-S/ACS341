@@ -1,3 +1,9 @@
+"""
+Sebastiano Zuddas 2022
+Program to make a Support Vector Machine. Uses hyperparameter tuning methods to ensure the model
+appropriate. Application is in tool condition monitoring.
+Hyperparameter tuning commented out to save computational resources
+"""
 from regression import data_sorting
 import pandas as pd
 import numpy as np
@@ -6,13 +12,10 @@ import seaborn as sns
 from sklearn.metrics import *
 from sklearn import svm
 
-
 scaled_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/scaled_dataset.csv')
 clean_data = pd.read_csv('/Users/seb/PycharmProjects/ACS341/courseworkSeb/clean_dataset.csv')
 scaled_data = scaled_data.astype('float')
-
 train, train_target, test, test_target = data_sorting(scaled_data, 'Failed_Yes', 0.2, False)
-
 
 ######################################################
 # Hyperparameter tuning
@@ -38,8 +41,6 @@ svm_confusion_matrix_opt = confusion_matrix(test_target, predict_test_svm_opt)
 class_rep_opt = classification_report(test_target, predict_test_svm_opt)
 print("Classification report train mlpc_opt: \n", class_rep_opt)
 print("Confusion matrix train mlpc_opt: \n", svm_confusion_matrix_opt)
-# print(tree_confusion_matrix)
-
 
 cmn = 100*svm_confusion_matrix_opt.astype('float') / svm_confusion_matrix_opt.sum(axis=1)[:, np.newaxis]  # normalise confusion matrix
 f = plt.figure(figsize=(30, 25))
@@ -59,4 +60,3 @@ cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)
 plt.title('Support Vector Machine Confusion Matrix', fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/svm_conf_matrix.png')
-
