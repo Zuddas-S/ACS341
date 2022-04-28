@@ -60,6 +60,3 @@ cax.tick_params(labelsize=50)
 plt.title('Support Vector Machine Confusion Matrix', fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/svm_conf_matrix.png')
 
-
-
-

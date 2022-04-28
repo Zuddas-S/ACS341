@@ -41,31 +41,22 @@ parameter_space = {
     'learning_rate': ['constant', 'invscaling', 'adaptive'],
 }
 
+# Hyper-parameter Tuning
 # clf = GridSearchCV(mlp_gs, parameter_space, n_jobs=-1, cv=5)
 # clf.fit(train, train_target)  # X is train samples and y is the corresponding labels
+
+
+
+# print('Best params: \n', clf.best_params_)
 
 """
 Best params: 
   {'activation': 'tanh', 'alpha': 0.001, 'hidden_layer_sizes': (20,), 'learning_rate': 'constant', 'solver': 'lbfgs'}
 """
 
-# print('Best params: \n', clf.best_params_)
-
 
 ######################################################################
-#
-
-mlpc = MLPClassifier(hidden_layer_sizes=(8, 8, 8),
-                     activation='relu',
-                     solver='adam',
-                     max_iter=500)
-mlpc.fit(train, train_target)
-predict_train_mlpc = mlpc.predict(train)
-predict_test_mlpc = mlpc.predict(test)
-
-net_confusion_matrix = confusion_matrix(train_target, predict_train_mlpc)
-print("Confusion matrix train mlpc: \n", net_confusion_matrix)
-
+# Optimal MLP Classifier based on hyperparams
 
 mlpc_opt = MLPClassifier(hidden_layer_sizes=(20,),
                          activation='tanh',
@@ -104,4 +95,6 @@ cax = plt.gcf().axes[-1]
 cax.tick_params(labelsize=50)
 plt.title('MLPClassifier Confusion Matrix', fontsize=50)
 f.savefig('/Users/seb/PycharmProjects/ACS341/courseworkSeb/graphs_outputted/NN_conf_matrix.png')
+
+# plt.show()
 

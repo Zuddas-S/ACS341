@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import *
-from sklearn import ensemble
 from sklearn.tree import *
 from sklearn import tree
 
@@ -34,7 +33,6 @@ test = test.drop('Failed_Yes', axis=1)
 decision_tree = DecisionTreeClassifier(random_state=0)
 path = decision_tree.cost_complexity_pruning_path(train, train_target)
 ccp_alphas, impurities = path.ccp_alphas, path.impurities
-
 
 fig, ax = plt.subplots()
 ax.plot(ccp_alphas[:-1], impurities[:-1], marker="o", drawstyle="steps-post")
